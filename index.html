@@ -1,0 +1,958 @@
+<!--
+  ============================================================================
+  テーブルポジション制 導入提案 ｜ 社内決裁用シングルページ提案書
+  ============================================================================
+
+  ■ 差し替え変数（この6つを検索して置換してください）
+    PROPOSER_NAME     : 【提案者名】
+    PROPOSER_ROLE     : 【所属・役職】
+    PROPOSAL_DATE     : 【提案日】
+    DECISION_DEADLINE : 【回答希望日】
+    PILOT_STORE       : 【パイロット店舗名】
+    CONTACT_EMAIL     : 【返信先メールアドレス】
+
+  ■ 画像
+    ./slides/slide-01.png 〜 ./slides/slide-09.png を同階層 slides/ に配置
+
+  ■ 実装方針
+    - 外部通信ゼロ（CDN・トラッキングなし）の完全単一HTML。印刷・社内ドライブ・オフラインで確実に動く
+    - 決裁者向け：依頼事項サマリーをFVに、承認CTAを常時追従、印刷CSSでA4縦に最適化
+    - 数値実績は一切記載せず「仮説＋検証設計＋撤退条件」で不安を消す構成
+
+  ■ mailtoが社内で動かない場合
+    S11のボタンの href="mailto:..." を Teams / Slack のリンクに差し替えてください
+  ============================================================================
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>テーブルポジション制 導入提案</title>
+<meta name="description" content="接客品質の「見え方」を変えるゼロコスト改革。1店舗・アイドルタイム限定のパイロット運用テスト承認のお願い。">
+
+<!-- OGP（Slack / Teams 共有時の見え方） -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="テーブルポジション制 導入提案">
+<meta property="og:description" content="接客品質の「見え方」を変えるゼロコスト改革。1店舗・1時間帯・1ルールのパイロット承認をお願いします。">
+<meta property="og:image" content="./slides/slide-01.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="テーブルポジション制 導入提案">
+<meta name="twitter:description" content="接客品質の「見え方」を変えるゼロコスト改革。1店舗・1時間帯・1ルールのパイロット承認をお願いします。">
+
+<style>
+  /* ===== デザイントークン ===== */
+  :root {
+    --navy:        #1B2A4A;
+    --navy-2:      #24365c;
+    --navy-soft:   #2f4370;
+    --yellow:      #F2C14E;
+    --yellow-deep: #d9a52f;
+    --bg:          #F7F5F0;
+    --surface:     #ffffff;
+    --surface-2:   #f0ede5;
+    --text:        #1f2733;
+    --text-soft:   #4a5568;
+    --muted:       #6b7280;
+    --line:        #e2ddd2;
+    --danger:      #b3401f;
+    --ok:          #2f7a52;
+
+    --radius:      14px;
+    --radius-sm:   10px;
+    --shadow:      0 1px 2px rgba(27,42,74,.06), 0 8px 24px rgba(27,42,74,.08);
+    --shadow-sm:   0 1px 2px rgba(27,42,74,.06), 0 2px 8px rgba(27,42,74,.06);
+
+    --maxw:        1080px;
+    --header-h:    64px;
+
+    --font: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP",
+            "Yu Gothic", "Meiryo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: calc(var(--header-h) + 12px);
+  }
+
+  a { color: inherit; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+  /* ===== 追従ヘッダー ===== */
+  .topbar {
+    position: sticky; top: 0; z-index: 60;
+    height: var(--header-h);
+    background: rgba(27,42,74,.97);
+    color: #fff;
+    display: flex; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: saturate(140%) blur(6px);
+  }
+  .topbar .wrap { display: flex; align-items: center; gap: 16px; width: 100%; }
+  .topbar__title { font-weight: 700; font-size: 15px; letter-spacing: .01em; }
+  .topbar__title span { color: var(--yellow); }
+  .topbar__spacer { flex: 1; }
+  .topbar__read {
+    font-size: 12px; color: #cdd6e6; white-space: nowrap;
+    border: 1px solid rgba(255,255,255,.18); border-radius: 999px;
+    padding: 3px 10px;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-weight: 700; font-size: 15px; line-height: 1;
+    padding: 12px 20px; border-radius: 999px;
+    border: 1.5px solid transparent; cursor: pointer;
+    text-decoration: none; white-space: nowrap;
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn--approve {
+    background: var(--yellow); color: var(--navy);
+    box-shadow: 0 4px 14px rgba(242,193,78,.4);
+  }
+  .btn--approve:hover { background: var(--yellow-deep); }
+  .btn--sm { padding: 9px 16px; font-size: 13px; }
+  .btn--ghost {
+    background: transparent; color: var(--navy); border-color: var(--line);
+  }
+  .btn--ghost:hover { background: var(--surface-2); }
+  .topbar .btn--approve { box-shadow: none; }
+
+  /* ===== 目次（デスクトップ：本文横に固定 / モバイル：非表示） ===== */
+  .layout { display: block; }
+  .toc { display: none; }
+
+  @media (min-width: 1000px) {
+    .layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 40px;
+      align-items: start;
+    }
+    .toc {
+      display: block;
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+      font-size: 13.5px;
+      max-height: calc(100vh - var(--header-h) - 48px);
+      overflow: auto;
+    }
+    .toc__label {
+      font-size: 11px; font-weight: 700; letter-spacing: .12em;
+      color: var(--muted); text-transform: uppercase; margin: 0 0 10px 12px;
+    }
+    .toc a {
+      display: block; text-decoration: none;
+      color: var(--text-soft);
+      padding: 6px 12px; border-radius: 8px;
+      border-left: 2px solid transparent;
+      line-height: 1.5;
+    }
+    .toc a:hover { background: var(--surface-2); color: var(--navy); }
+    .toc a.is-active {
+      color: var(--navy); font-weight: 700;
+      background: #fff; border-left-color: var(--yellow);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+
+  /* ===== セクション共通 ===== */
+  main { padding-bottom: 96px; }
+  .section { padding: 40px 0 8px; scroll-margin-top: calc(var(--header-h) + 16px); }
+  .section + .section { border-top: 1px solid var(--line); }
+  .eyebrow {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    letter-spacing: .1em; color: var(--yellow-deep);
+    background: #fff; border: 1px solid var(--line); border-radius: 999px;
+    padding: 3px 12px; margin-bottom: 14px;
+  }
+  h2 { font-size: 26px; line-height: 1.4; margin: 4px 0 14px; color: var(--navy); }
+  h3 { font-size: 18px; margin: 0 0 8px; color: var(--navy); }
+  .lead { font-size: 17px; color: var(--text-soft); margin: 0 0 22px; max-width: 68ch; }
+  .note {
+    font-size: 13px; color: var(--muted); line-height: 1.7; margin: 12px 0 0;
+  }
+  p { margin: 0 0 14px; }
+
+  /* ===== カード ===== */
+  .cards { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .cards--3 { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 640px) { .cards--2 { grid-template-columns: repeat(2, 1fr); } }
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm);
+  }
+  .card h3 { font-size: 16px; }
+  .card p { margin: 0; font-size: 15px; color: var(--text-soft); }
+
+  /* ===== テーブル ===== */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table {
+    width: 100%; border-collapse: collapse; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    font-size: 15px; min-width: 520px;
+  }
+  th, td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--navy); color: #fff; font-size: 14px; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: #faf8f3; }
+  /* サマリーテーブル（2列・見出し列強調） */
+  .kv th { width: 34%; background: var(--surface-2); color: var(--navy); font-weight: 700; }
+
+  /* ===== サマリーボックス（S2） ===== */
+  .summary {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff; border-radius: 18px; padding: 28px; box-shadow: var(--shadow);
+  }
+  .summary h2 { color: #fff; }
+  .summary .lead { color: #dfe6f2; }
+  .summary .ask {
+    font-size: 19px; font-weight: 700; line-height: 1.7;
+    background: rgba(242,193,78,.14); border: 1px solid rgba(242,193,78,.45);
+    border-radius: var(--radius); padding: 16px 18px; margin: 4px 0 22px;
+  }
+  .summary .ask b { color: var(--yellow); }
+  .summary table { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.14); }
+  .summary th, .summary td { border-bottom-color: rgba(255,255,255,.12); color: #eef2f8; }
+  .summary .kv th { background: rgba(255,255,255,.06); color: var(--yellow); }
+  .summary tbody tr:nth-child(even) td { background: rgba(255,255,255,.03); }
+  .summary__cta { margin-top: 22px; }
+
+  /* ===== フロー（S4） ===== */
+  .flow { display: grid; gap: 14px; }
+  @media (min-width: 800px) {
+    .flow { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+  }
+  .flow__step {
+    position: relative; background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 18px 18px 18px 18px; box-shadow: var(--shadow-sm);
+  }
+  .flow__num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--navy); color: #fff; font-weight: 700; font-size: 15px; margin-bottom: 10px;
+  }
+  .flow__step p { margin: 0; font-size: 15px; color: var(--text-soft); }
+  .flow__arrow { display: none; }
+  @media (min-width: 800px) {
+    .flow__step:not(:last-child)::after {
+      content: "→"; position: absolute; right: -12px; top: 50%;
+      transform: translateY(-50%); color: var(--yellow-deep);
+      font-size: 20px; font-weight: 700; z-index: 1;
+    }
+  }
+
+  /* ===== 4サイクル（S5・番号付き） ===== */
+  .steps { display: grid; gap: 14px; counter-reset: step; }
+  @media (min-width: 720px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  .step {
+    display: flex; gap: 14px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 18px; box-shadow: var(--shadow-sm);
+  }
+  .step__n {
+    flex: none; width: 34px; height: 34px; border-radius: 10px;
+    background: var(--yellow); color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px;
+  }
+  .step h3 { margin-bottom: 4px; }
+  .step p { margin: 0; font-size: 14.5px; color: var(--text-soft); }
+
+  /* 価値の並列（S5下段 / S11） */
+  .values { display: grid; gap: 14px; margin-top: 20px; }
+  @media (min-width: 720px) { .values { grid-template-columns: repeat(3, 1fr); } }
+  .value {
+    border-left: 3px solid var(--yellow); background: #fff;
+    border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow-sm);
+  }
+  .value b { color: var(--navy); }
+  .value p { margin: 4px 0 0; font-size: 14.5px; color: var(--text-soft); }
+
+  /* ===== チェックリスト（S7） ===== */
+  .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .checklist li {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: 12px 14px; box-shadow: var(--shadow-sm);
+  }
+  .checklist .box {
+    flex: none; width: 22px; height: 22px; border-radius: 6px; margin-top: 2px;
+    border: 2px solid var(--navy-soft); position: relative; background: #fff;
+  }
+  .checklist .box::after {
+    content: ""; position: absolute; left: 6px; top: 1px;
+    width: 6px; height: 12px; border: solid var(--yellow-deep);
+    border-width: 0 3px 3px 0; transform: rotate(45deg);
+  }
+  .checklist span.t { font-size: 15px; color: var(--text); }
+
+  .split { display: grid; gap: 24px; }
+  @media (min-width: 860px) { .split { grid-template-columns: 1fr 1fr; align-items: start; } }
+
+  .figure {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow-sm);
+  }
+  .figure img { width: 100%; height: auto; border-radius: var(--radius-sm); display: block; }
+  .figure figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.7; }
+
+  /* ===== 撤退条件 強調ボックス（S9） ===== */
+  .callout {
+    display: flex; gap: 14px; align-items: flex-start;
+    border: 1.5px solid var(--danger); background: #fdf1ec;
+    border-radius: var(--radius); padding: 18px; margin-top: 22px;
+  }
+  .callout .ico {
+    flex: none; width: 32px; height: 32px; border-radius: 8px;
+    background: var(--danger); color: #fff; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .callout b { color: var(--danger); }
+  .callout p { margin: 4px 0 0; font-size: 15px; color: #5c2415; }
+
+  /* ===== details（S10） ===== */
+  details.more {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden;
+  }
+  details.more > summary {
+    cursor: pointer; list-style: none; padding: 18px 20px;
+    font-weight: 700; color: var(--navy); font-size: 17px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  details.more > summary::-webkit-details-marker { display: none; }
+  details.more > summary .chev {
+    margin-left: auto; transition: transform .2s ease; color: var(--yellow-deep); font-weight: 800;
+  }
+  details.more[open] > summary .chev { transform: rotate(90deg); }
+  details.more .more__body { padding: 0 20px 22px; }
+  .tag-out {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    color: var(--muted); background: var(--surface-2);
+    border-radius: 999px; padding: 2px 10px;
+  }
+
+  /* ===== クロージング（S11） ===== */
+  .closing {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff; border-radius: 18px; padding: 30px; box-shadow: var(--shadow);
+  }
+  .closing h2 { color: #fff; }
+  .closing p { color: #dfe6f2; }
+  .closing .value { background: rgba(255,255,255,.05); border-left-color: var(--yellow); }
+  .closing .value b { color: var(--yellow); }
+  .closing .value p { color: #dfe6f2; }
+  .next-action {
+    margin: 22px 0; padding: 14px 18px; border-radius: var(--radius);
+    background: rgba(242,193,78,.14); border: 1px solid rgba(242,193,78,.4);
+    font-weight: 700; font-size: 16px;
+  }
+  .next-action span { color: var(--yellow); }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+  .btn--question { background: #fff; color: var(--navy); }
+  .btn--revise { background: transparent; color: #fff; border-color: rgba(255,255,255,.5); }
+  .btn--revise:hover { background: rgba(255,255,255,.08); }
+
+  /* ===== 付録グリッド（S12） ===== */
+  .grid-slides {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 720px) { .grid-slides { grid-template-columns: repeat(3, 1fr); } }
+  .slide-thumb {
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    background: #fff; padding: 6px; cursor: zoom-in; box-shadow: var(--shadow-sm);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .slide-thumb:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .slide-thumb img { width: 100%; height: auto; display: block; border-radius: 6px; }
+  .slide-thumb .cap { font-size: 12px; color: var(--muted); text-align: center; padding: 6px 0 2px; }
+
+  /* ===== フッター ===== */
+  footer {
+    border-top: 1px solid var(--line); background: #fff;
+    padding: 24px 0; font-size: 13px; color: var(--muted);
+  }
+
+  /* ===== モバイル下部固定バー ===== */
+  .mobilebar { display: none; }
+  @media (max-width: 999px) {
+    .mobilebar {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 55;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+      background: rgba(255,255,255,.97); border-top: 1px solid var(--line);
+      box-shadow: 0 -6px 20px rgba(27,42,74,.08); gap: 10px;
+      backdrop-filter: blur(6px);
+    }
+    .mobilebar .btn { flex: 1; }
+    main { padding-bottom: 96px; }
+  }
+
+  /* ===== ライトボックス（自前実装） ===== */
+  .lb {
+    position: fixed; inset: 0; z-index: 90; display: none;
+    background: rgba(15,22,38,.92); align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .lb.open { display: flex; }
+  .lb img { max-width: 96vw; max-height: 88vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  .lb__close, .lb__nav {
+    position: absolute; background: rgba(255,255,255,.14); color: #fff;
+    border: 1px solid rgba(255,255,255,.25); border-radius: 999px;
+    width: 46px; height: 46px; font-size: 22px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lb__close { top: 18px; right: 18px; }
+  .lb__nav { top: 50%; transform: translateY(-50%); }
+  .lb__prev { left: 18px; } .lb__next { right: 18px; }
+  .lb__cap { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: #cdd6e6; font-size: 13px; }
+
+  /* ===== アニメーション（控えめ） ===== */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ============================================================
+     印刷CSS（A4縦・会議持ち込み用）
+     ============================================================ */
+  @media print {
+    :root { --header-h: 0px; }
+    @page { size: A4 portrait; margin: 14mm; }
+    html { scroll-behavior: auto; }
+    body { background: #fff; font-size: 11pt; line-height: 1.6; }
+    .topbar, .toc, .mobilebar, .lb,
+    .summary__cta, .cta-row, .btn { display: none !important; }
+    .layout { display: block; }
+    .wrap { max-width: none; padding: 0; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+
+    .section { padding: 10pt 0; page-break-inside: avoid; }
+    .section + .section { border-top: 1px solid #ccc; }
+    h2 { font-size: 16pt; }
+    .card, .step, .flow__step, .value, .figure, table, .callout,
+    .checklist li, details.more, .summary, .closing, .slide-thumb {
+      page-break-inside: avoid;
+      box-shadow: none !important;
+    }
+    .summary, .closing { color: #000; background: #fff; border: 1.5px solid var(--navy); }
+    .summary h2, .closing h2, .summary .lead, .summary th, .summary td,
+    .closing p, .summary .ask, .next-action { color: #000 !important; }
+    .summary .ask b, .summary .kv th { color: var(--navy-2) !important; }
+    thead th { background: #e8e8e8 !important; color: #000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    table { min-width: 0; }
+    .table-scroll { overflow: visible; }
+    /* details は開いた状態で印刷 */
+    details.more[open] .more__body,
+    details.more .more__body { display: block !important; }
+    details.more .chev { display: none; }
+    a[href^="mailto:"]::after { content: ""; }
+    .grid-slides { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+
+<!-- ======================= 追従ヘッダー ======================= -->
+<header class="topbar">
+  <div class="wrap">
+    <div class="topbar__title">テーブルポジション制 <span>導入提案</span></div>
+    <div class="topbar__spacer"></div>
+    <span class="topbar__read">読了目安 4分</span>
+    <a class="btn btn--approve btn--sm" href="#approve">承認する</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+
+    <!-- ======================= 目次（スクロール連動） ======================= -->
+    <nav class="toc" aria-label="目次">
+      <p class="toc__label">目次</p>
+      <a href="#ask">ご判断いただきたいこと</a>
+      <a href="#issue">現状の課題</a>
+      <a href="#cause">原因の構造</a>
+      <a href="#solution">解決策：4サイクル</a>
+      <a href="#beforeafter">Before / After</a>
+      <a href="#steps">導入ステップ</a>
+      <a href="#kpi">検証設計・KPI</a>
+      <a href="#risk">リスクと撤退条件</a>
+      <a href="#extra">追加提案</a>
+      <a href="#approve">承認のお願い</a>
+    </nav>
+
+    <main>
+
+      <!-- =================== S1 ヘッダー =================== -->
+      <section class="section reveal" id="top">
+        <span class="eyebrow">社内提案 ／ 決裁用</span>
+        <h2 style="font-size:30px;">テーブルポジション制 導入提案</h2>
+        <p class="lead" style="font-size:18px;">接客品質の「見え方」を変える、ゼロコスト改革。</p>
+        <div class="table-scroll">
+          <table class="kv" aria-label="提案概要">
+            <tbody>
+              <tr><th>提案者</th><td>【提案者名】</td></tr>
+              <tr><th>所属・役職</th><td>【所属・役職】</td></tr>
+              <tr><th>提案日</th><td>【提案日】</td></tr>
+              <tr><th>回答希望日</th><td>【回答希望日】</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =================== S2 依頼事項サマリー（最重要・FV） =================== -->
+      <section class="section reveal" id="ask">
+        <div class="summary">
+          <span class="eyebrow" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:var(--yellow);">まず、これだけ</span>
+          <h2>ご判断いただきたいこと</h2>
+          <p class="ask">
+            <b>【パイロット店舗名】</b> 1店舗・アイドルタイム限定で、<br>
+            テーブルポジション制の <b>運用テスト開始をご承認ください。</b>
+          </p>
+          <div class="table-scroll">
+            <table class="kv" aria-label="依頼事項サマリー">
+              <tbody>
+                <tr><th>依頼事項</th><td>パイロット運用テストの実施承認</td></tr>
+                <tr><th>追加投資</th><td>0円（新規システム導入なし。既存ハンディと現場ルールのみ）</td></tr>
+                <tr><th>対象範囲</th><td>1店舗 ／ 1時間帯 ／ 1ルール</td></tr>
+                <tr><th>準備期間</th><td>ルール策定＋ロープレ　1日10分 × 数日</td></tr>
+                <tr><th>検証期間</th><td>2週間（※要確認：現場都合により調整）</td></tr>
+                <tr><th>撤退条件</th><td>提供オペレーションに支障が出た時点で即時中止・原状復帰</td></tr>
+                <tr><th>現場負担</th><td>新規作業の追加なし（既存のオーダー入力ルールの統一のみ）</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="summary__cta">
+            <a class="btn btn--approve" href="#approve">承認に進む</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================== S3 現状の課題 =================== -->
+      <section class="section reveal" id="issue">
+        <span class="eyebrow">現状の課題</span>
+        <h2>「お待たせしました、○○をご注文のお客様は？」</h2>
+        <p class="lead">
+          提供時の「確認」は、丁寧な接客ではありません。お客様の会話を遮り、サービスのテンポを落とす、オペレーションのロスです。
+        </p>
+        <div class="cards cards--3">
+          <div class="card">
+            <h3>確認して置く</h3>
+            <p>誰が頼んだかを確認してから、正しく置く。これが日常的に常態化している。</p>
+          </div>
+          <div class="card">
+            <h3>誤配膳が起きる</h3>
+            <p>間違った人に提供してしまう。ミスが発生する余地が構造的に残っている。</p>
+          </div>
+          <div class="card">
+            <h3>会話を遮る</h3>
+            <p>お客様の会話を遮り、体験価値を下げてしまう。</p>
+          </div>
+        </div>
+        <p class="note" style="font-size:15px;color:var(--text-soft);">
+          「確認が前提」のオペレーションが、顧客体験と提供スピードの両方を損なっています。
+        </p>
+      </section>
+
+      <!-- =================== S4 原因の構造 =================== -->
+      <section class="section reveal" id="cause">
+        <span class="eyebrow">原因の構造</span>
+        <h2>なぜ「確認」が生じるのか（属人化の弊害）</h2>
+        <p class="lead">
+          注文情報が「オーダーを受けた担当者」の頭の中にしかなく、他のスタッフが提供時に迷う構造になっています。
+        </p>
+        <div class="flow">
+          <div class="flow__step"><span class="flow__num">1</span><p>注文情報が「オーダー担当者」にブラックボックス化</p></div>
+          <div class="flow__step"><span class="flow__num">2</span><p>オーダー担当者と提供者の間で情報が断絶</p></div>
+          <div class="flow__step"><span class="flow__num">3</span><p>提供者は誰の料理か分からないままテーブルへ向かう</p></div>
+        </div>
+        <ul style="margin:20px 0 0;padding-left:1.2em;color:var(--text-soft);">
+          <li>テーブルに到着してから「探す」「聞く」という無駄なステップが発生する</li>
+          <li>忙しい時間帯ほど、この連携ミスが店舗全体の回転を遅らせる</li>
+        </ul>
+        <div class="callout" style="border-color:var(--navy-soft);background:#eef1f7;margin-top:20px;">
+          <div class="ico" style="background:var(--navy);">i</div>
+          <p style="color:var(--navy);">
+            <b style="color:var(--navy);">これは個人の注意力の問題ではありません。</b>　情報が共有されない「構造」の問題です。
+          </p>
+        </div>
+      </section>
+
+      <!-- =================== S5 解決策：4サイクル =================== -->
+      <section class="section reveal" id="solution">
+        <span class="eyebrow">解決策</span>
+        <h2>テーブルポジション制の4サイクル</h2>
+        <p class="lead">
+          質の高いサービスは、個人の「気合い」や「記憶力」ではなく、全スタッフが共通認識を持てる「観察と共有の仕組み」で再現できます。
+        </p>
+        <div class="steps">
+          <div class="step"><div class="step__n">1</div><div><h3>観察</h3><p>オーダー時に、誰がどの席（ポジション）にいるかを確認する。</p></div></div>
+          <div class="step"><div class="step__n">2</div><div><h3>情報共有</h3><p>ハンディ等に「商品」と「ポジション番号」を紐づけて入力する。</p></div></div>
+          <div class="step"><div class="step__n">3</div><div><h3>提供判断</h3><p>伝票を見るだけで、提供スタッフは「誰の料理か」を即座に把握できる。</p></div></div>
+          <div class="step"><div class="step__n">4</div><div><h3>接客品質安定</h3><p>確認ゼロで、流れるようにスッと商品を提供できる。</p></div></div>
+        </div>
+        <div class="values">
+          <div class="value"><b>属人化の排除</b><p>誰がオーダーを取り、誰が提供しても品質が変わらない。</p></div>
+          <div class="value"><b>共通言語の構築</b><p>スタッフ全員が「同じルール」でテーブルを見る。</p></div>
+          <div class="value"><b>仕組みによる再現性</b><p>新人アルバイトでも初日から迷わず提供可能に。</p></div>
+        </div>
+      </section>
+
+      <!-- =================== S6 Before / After =================== -->
+      <section class="section reveal" id="beforeafter">
+        <span class="eyebrow">Before / After</span>
+        <h2>「確認する接客」から「把握して提供する接客」へ</h2>
+        <p class="lead">オペレーションの前提そのものをシフトします。</p>
+        <div class="table-scroll">
+          <table aria-label="Before After 比較">
+            <thead>
+              <tr><th style="width:20%;">観点</th><th>Before：現在の確認提供</th><th>After：ポジション制導入後</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">お客様からの見え方</th>
+                <td>会話を遮られ、聞かれる煩わしさ</td>
+                <td>会話を遮られるストレスが消え、「分かってくれている」特別感へ</td>
+              </tr>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">スタッフの心理・行動</th>
+                <td>間違えたらどうしよう、という不安と迷い</td>
+                <td>提供時の心理的負担が減り、自信を持って接客できる</td>
+              </tr>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">オペレーション</th>
+                <td>テーブル前での滞留による提供遅延</td>
+                <td>提供時間が短縮され、ピーク時のホール回転率が向上</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          ※ After欄は導入により期待される変化であり、実測値ではありません。効果はパイロットで検証します。
+        </p>
+      </section>
+
+      <!-- =================== S7 導入ステップ =================== -->
+      <section class="section reveal" id="steps">
+        <span class="eyebrow">導入ステップ</span>
+        <h2>「ルール統一」と「限定トライアル」から始める</h2>
+        <p class="lead">
+          複雑な改革や大掛かりなシステム導入は不要です。現場ルールの統一と、限定的なトライアルから始めます。
+        </p>
+        <div class="split">
+          <div>
+            <h3 style="margin-bottom:12px;">現場ルール統一チェックリスト</h3>
+            <ul class="checklist">
+              <li><span class="box"></span><span class="t">テーブル上のポジション番号（起点と回り方）ルールの設定</span></li>
+              <li><span class="box"></span><span class="t">オーダーテイク時のポジション番号入力ルールの徹底</span></li>
+              <li><span class="box"></span><span class="t">キッチンアップ時・提供前の伝票確認基準の統一</span></li>
+              <li><span class="box"></span><span class="t">全スタッフ間での共有とロープレ（1日10分）</span></li>
+              <li><span class="box"></span><span class="t">トライアル開始設定（まずは1店舗のアイドルタイム等から）</span></li>
+            </ul>
+          </div>
+          <figure class="figure">
+            <img src="./slides/slide-07.png" loading="lazy"
+                 alt="テーブルのポジション番号ルール図。入口を背にして左手前を1番とし、時計回りにナンバリングする配置を示した図。">
+            <figcaption>入口を背にして左手前を1番とし、時計回りにナンバリング。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- =================== S8 検証設計・KPI（新規） =================== -->
+      <section class="section reveal" id="kpi">
+        <span class="eyebrow">検証設計 ／ 新規</span>
+        <h2>効果をどう検証するか</h2>
+        <p class="lead">
+          導入効果は「仮説」です。以下の指標をパイロット期間中に計測し、継続可否を判断します。
+        </p>
+        <div class="table-scroll">
+          <table aria-label="計測指標">
+            <thead>
+              <tr><th style="width:26%;">指標</th><th>測り方</th><th style="width:22%;">判定</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">提供時テーブル滞留時間</th>
+                <td>ランナーがテーブルに到達してから配膳完了までの秒数を10卓サンプリング</td>
+                <td>短縮すれば継続</td>
+              </tr>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">「確認」発話の回数</th>
+                <td>1時間あたりの「ご注文のお客様は？」発話回数をカウント</td>
+                <td>減少すれば継続</td>
+              </tr>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">誤配膳の発生件数</th>
+                <td>日次で記録</td>
+                <td>増加しなければ継続</td>
+              </tr>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">スタッフの主観評価</th>
+                <td>導入前後で5段階アンケート（迷いの有無）</td>
+                <td>改善すれば継続</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          計測はストップウォッチと日次記録シートのみで実施可能です。追加コストは発生しません。
+        </p>
+      </section>
+
+      <!-- =================== S9 リスクと対策（新規） =================== -->
+      <section class="section reveal" id="risk">
+        <span class="eyebrow">リスクと対策 ／ 新規</span>
+        <h2>失敗したとき、どう戻すか</h2>
+        <div class="table-scroll">
+          <table aria-label="リスクと対策">
+            <thead>
+              <tr><th style="width:40%;">想定リスク</th><th>対策</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">番号ルールの解釈がスタッフ間でぶれる</th>
+                <td>全卓共通の起点ルール（入口を背に左手前＝1、時計回り）を1枚図で掲示</td>
+              </tr>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">ピーク時に入力が追いつかない</th>
+                <td>パイロットはアイドルタイム限定で開始し、負荷を確認してから拡大</td>
+              </tr>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">変則的な席移動・相席で番号が崩れる</th>
+                <td>移動発生時は口頭確認に戻す運用を許容（例外運用を明文化）</td>
+              </tr>
+              <tr>
+                <th style="background:var(--surface-2);color:var(--navy);">新人が覚えられない</th>
+                <td>1日10分のロープレをシフト前に実施</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <div class="ico">!</div>
+          <p>
+            <b>撤退条件：</b>提供オペレーションに支障が出た場合、その場で従来運用に戻します。
+            設備変更を伴わないため、原状復帰コストはゼロです。
+          </p>
+        </div>
+      </section>
+
+      <!-- =================== S10 追加提案（折りたたみ・初期閉） =================== -->
+      <section class="section reveal" id="extra">
+        <details class="more">
+          <summary>
+            追加提案：ハンディキー活用による「無言の連携」
+            <span class="chev">›</span>
+          </summary>
+          <div class="more__body">
+            <p style="margin-top:4px;"><span class="tag-out">本提案の承認範囲外</span></p>
+            <p style="color:var(--text-soft);">
+              テーブルポジションと合わせてハンディの拡張キーを活用することで、ホールと厨房の口頭連携への依存を減らします。パイロット成功後の次段階として記載します。
+            </p>
+            <div class="table-scroll">
+              <table aria-label="ハンディキー一覧">
+                <thead>
+                  <tr><th style="width:22%;">キー</th><th style="width:20%;">意味</th><th>用途</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>small table</td><td>卓狭い</td><td>提供タイミングの調整やバッシング優先の合図</td></tr>
+                  <tr><td>rush</td><td>急ぎ</td><td>お客様がお急ぎ、最優先調理の依頼</td></tr>
+                  <tr><td>1 plate</td><td>一皿提供</td><td>取り分け不要、個人で食べる想定</td></tr>
+                  <tr><td>after</td><td>食後</td><td>デザートや食後のお茶出しタイミングの指示</td></tr>
+                  <tr><td>kids</td><td>子供あり</td><td>カトラリー準備や味付け変更の厨房へのサイン</td></tr>
+                  <tr><td>same</td><td>同卓同提供</td><td>異なる商品でも、同時に提供する配慮</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- =================== S11 承認のお願い（クロージング） =================== -->
+      <section class="section reveal" id="approve">
+        <div class="closing">
+          <span class="eyebrow" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:var(--yellow);">承認のお願い</span>
+          <h2>まずは「1店舗・1時間帯・1ルール」から</h2>
+          <p>
+            テーブルポジション制は、新規投資ゼロで、接客品質・再現性・全店展開の土台を同時に満たします。
+            まずは限定的なトライアルで、効果を数字で確認させてください。
+          </p>
+          <div class="values">
+            <div class="value"><b>低コスト</b><p>新たなシステム投資ゼロで、明日から実装可能。</p></div>
+            <div class="value"><b>高品質</b><p>お客様からの「見え方」が、洗練されたサービスに変わる。</p></div>
+            <div class="value"><b>再現性</b><p>属人化が排除され、将来的に全店展開可能なフォーマットに。</p></div>
+          </div>
+          <div class="next-action">
+            <span>Next Action：</span>今週中に【パイロット店舗名】にて、ポジションルールの策定と運用テストを開始
+          </div>
+          <div class="cta-row">
+            <a class="btn btn--approve"
+               href="mailto:【返信先メールアドレス】?subject=%E3%80%90%E6%89%BF%E8%AA%8D%E3%80%91%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%83%9D%E3%82%B8%E3%82%B7%E3%83%A7%E3%83%B3%E5%88%B6%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88&body=%E3%80%90%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%E5%BA%97%E8%88%97%E5%90%8D%E3%80%91%E3%81%A7%E3%81%AE%E9%81%8B%E7%94%A8%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E6%89%BF%E8%AA%8D%E3%81%97%E3%81%BE%E3%81%99%E3%80%82">承認する</a>
+            <a class="btn btn--question"
+               href="mailto:【返信先メールアドレス】?subject=%E3%80%90%E8%B3%AA%E5%95%8F%E3%80%91%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%83%9D%E3%82%B8%E3%82%B7%E3%83%A7%E3%83%B3%E5%88%B6%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88&body=%E4%BB%A5%E4%B8%8B%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E8%B3%AA%E5%95%8F%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%EF%BC%9A%0A%0A">質問がある</a>
+            <a class="btn btn--revise"
+               href="mailto:【返信先メールアドレス】?subject=%E3%80%90%E4%BF%AE%E6%AD%A3%E4%BE%9D%E9%A0%BC%E3%80%91%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%83%9D%E3%82%B8%E3%82%B7%E3%83%A7%E3%83%B3%E5%88%B6%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88&body=%E4%BB%A5%E4%B8%8B%E3%81%AE%E6%9D%A1%E4%BB%B6%E3%82%92%E4%BF%AE%E6%AD%A3%E3%81%97%E3%81%9F%E3%81%84%EF%BC%9A%0A%0A%E2%97%8F%E5%AF%BE%E8%B1%A1%E5%BA%97%E8%88%97%EF%BC%9A%0A%E2%97%8F%E6%A4%9C%E8%A8%BC%E6%9C%9F%E9%96%93%EF%BC%9A%0A%E2%97%8F%E3%81%9D%E3%81%AE%E4%BB%96%EF%BC%9A%0A">条件を修正したい</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================== S12 付録：資料全9枚 =================== -->
+      <section class="section reveal" id="appendix">
+        <span class="eyebrow">付録</span>
+        <h2>提案資料（全9枚）</h2>
+        <p class="lead">元となった提案スライドです。クリックすると拡大表示します。</p>
+        <div class="grid-slides" id="slideGrid">
+          <!-- JSで生成（slide-01 〜 slide-09） -->
+        </div>
+      </section>
+
+      <footer>
+        テーブルポジション制 導入提案　｜　提案者：【提案者名】（【所属・役職】）　｜　提案日：【提案日】<br>
+        本資料は社内検討用です（noindex）。外部への通信・トラッキングは行っていません。
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<!-- ======================= モバイル下部固定バー ======================= -->
+<div class="mobilebar">
+  <a class="btn btn--ghost" href="#ask">依頼内容</a>
+  <a class="btn btn--approve" href="#approve">承認する</a>
+</div>
+
+<!-- ======================= ライトボックス（自前） ======================= -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="資料拡大表示">
+  <button class="lb__close" id="lbClose" aria-label="閉じる">×</button>
+  <button class="lb__nav lb__prev" id="lbPrev" aria-label="前へ">‹</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb__nav lb__next" id="lbNext" aria-label="次へ">›</button>
+  <div class="lb__cap" id="lbCap"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---- S12 スライドグリッド生成 ---- */
+  var TOTAL = 9;
+  var grid = document.getElementById("slideGrid");
+  var slides = [];
+  for (var i = 1; i <= TOTAL; i++) {
+    var n = String(i).padStart(2, "0");
+    var src = "./slides/slide-" + n + ".png";
+    slides.push(src);
+    var fig = document.createElement("figure");
+    fig.className = "slide-thumb";
+    fig.setAttribute("data-index", i - 1);
+    fig.innerHTML =
+      '<img src="' + src + '" loading="lazy" alt="提案資料 ' + i + '枚目">' +
+      '<figcaption class="cap">スライド ' + i + ' / ' + TOTAL + '</figcaption>';
+    grid.appendChild(fig);
+  }
+
+  /* ---- ライトボックス ---- */
+  var lb = document.getElementById("lb");
+  var lbImg = document.getElementById("lbImg");
+  var lbCap = document.getElementById("lbCap");
+  var cur = 0;
+
+  function openLb(idx) {
+    cur = idx;
+    render();
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeLb() {
+    lb.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  function render() {
+    lbImg.src = slides[cur];
+    lbImg.alt = "提案資料 " + (cur + 1) + "枚目（拡大）";
+    lbCap.textContent = "スライド " + (cur + 1) + " / " + TOTAL;
+  }
+  function step(d) { cur = (cur + d + TOTAL) % TOTAL; render(); }
+
+  grid.addEventListener("click", function (e) {
+    var t = e.target.closest(".slide-thumb");
+    if (t) openLb(parseInt(t.getAttribute("data-index"), 10));
+  });
+  document.getElementById("lbClose").addEventListener("click", closeLb);
+  document.getElementById("lbPrev").addEventListener("click", function () { step(-1); });
+  document.getElementById("lbNext").addEventListener("click", function () { step(1); });
+  lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
+  document.addEventListener("keydown", function (e) {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") closeLb();
+    else if (e.key === "ArrowLeft") step(-1);
+    else if (e.key === "ArrowRight") step(1);
+  });
+
+  /* ---- 目次スクロール連動（アクティブ表示） ---- */
+  var links = Array.prototype.slice.call(document.querySelectorAll(".toc a"));
+  var map = {};
+  links.forEach(function (a) {
+    var id = a.getAttribute("href").slice(1);
+    var sec = document.getElementById(id);
+    if (sec) map[id] = a;
+  });
+  var targets = Object.keys(map).map(function (id) { return document.getElementById(id); });
+
+  if ("IntersectionObserver" in window && targets.length) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("is-active"); });
+          var a = map[en.target.id];
+          if (a) a.classList.add("is-active");
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    targets.forEach(function (t) { io.observe(t); });
+  }
+
+  /* ---- フェードイン（reveal / reduced-motion 尊重） ---- */
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+  if (reduce || !("IntersectionObserver" in window)) {
+    reveals.forEach(function (el) { el.classList.add("in"); });
+  } else {
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); ro.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    reveals.forEach(function (el) { ro.observe(el); });
+  }
+
+  /* ---- 印刷時：details を開く ---- */
+  var moreDetails = document.querySelector("details.more");
+  if (moreDetails && window.matchMedia) {
+    var mq = window.matchMedia("print");
+    var wasOpen = false;
+    var onPrint = function (e) {
+      if (e.matches) { wasOpen = moreDetails.open; moreDetails.open = true; }
+      else { moreDetails.open = wasOpen; }
+    };
+    if (mq.addEventListener) mq.addEventListener("change", onPrint);
+    else if (mq.addListener) mq.addListener(onPrint);
+    window.addEventListener("beforeprint", function () { wasOpen = moreDetails.open; moreDetails.open = true; });
+    window.addEventListener("afterprint", function () { moreDetails.open = wasOpen; });
+  }
+})();
+</script>
