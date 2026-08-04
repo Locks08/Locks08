@@ -1,11 +1,14 @@
 // GameCanvas.tsx — Babylon-in-React integration contract for the game-dev skill.
 // React = picture frame, Babylon = canvas, godogen game code = the painting.
 //
-// Place at client/src/components/GameCanvas.tsx and render it as the ONLY content
-// of the "/" route. The Babylon engine owns the full-screen <canvas>; all gameplay
-// lives in framework-agnostic TS modules under client/src/game/ (ported from godogen).
+// OPTIONAL — use this only when the game must live inside an existing React app.
+// The default host is godogen's plain Vite shell, which needs no React at all.
 //
-// Critical safety rules (see references/manus-adaptations.md):
+// Place at src/components/GameCanvas.tsx and render it as the ONLY content of the
+// "/" route. The Babylon engine owns the full-screen <canvas>; all gameplay lives
+// in framework-agnostic TS modules under src/game/ (ported from godogen).
+//
+// Critical safety rules (see references/claude-code-adaptations.md §1):
 //  - Initialize the engine exactly once; guard against React StrictMode double-mount.
 //  - Always engine.dispose() on unmount and remove every listener.
 //  - Tie the render loop to the component lifecycle.

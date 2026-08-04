@@ -1,6 +1,6 @@
 # Task Execution
 
-> **MANUS OVERRIDE:** Same inner loop, but the project is a WebDev React app. Edit under `client/src/game/**`, rely on Vite HMR, verify with `webdev_take_screenshot` (not `capture.mjs`), type-check with `pnpm check`, inspect `.manus-logs/*.log` via grep/tail. See `references/manus-adaptations.md` §3.
+> **CLAUDE CODE OVERRIDE:** Same inner loop, on the local Vite project. Edit under `src/game/**`, rely on Vite HMR, verify with `scripts/capture.mjs` against `http://127.0.0.1:5173`, type-check with `npm run check`, and grep/tail the background dev-server output for runtime errors. See `references/claude-code-adaptations.md` §3.
 
 Implementation workflow for Babylon.js feature work after scaffold is in place.
 

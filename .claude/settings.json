@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git ls-files:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+      "Bash(node --version)",
+      "Bash(npm --version)",
+      "Bash(npm run check:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm test:*)",
+      "Bash(python3 -m json.tool:*)",
+      "Read(./**)",
+      "WebFetch(https://code.claude.com/docs/*)",
+      "WebFetch(https://github.com/htdt/godogen*)"
+    ],
+    "deny": [
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Read(./**/*.pem)",
+      "Read(./**/id_rsa*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)"
+    ]
+  }
+}

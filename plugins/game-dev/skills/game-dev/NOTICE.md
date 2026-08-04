@@ -8,8 +8,8 @@ This skill (`game-dev`) is an adaptation of the **godogen** project by Alex Ermo
 
 ## What was reused and what was changed
 
-- `references/godogen-stages/*.md` contains godogen's original stage instructions (visual-target, decomposer, architecture, scaffold, asset-planner, asset-gen, rembg, task-execution, quirks, scene-generation, capture, and the skill overview), reproduced substantially verbatim from the upstream repository, with inline "MANUS OVERRIDE" notes added where the Manus environment differs.
-- `references/manus-adaptations.md`, `SKILL.md`, and `templates/GameCanvas.tsx` are original Manus-authored adaptations that change three aspects of godogen: the host shell (Manus WebDev React project instead of a bare Vite scaffold), asset generation (Manus built-in image generation instead of the paid Gemini/Grok/Tripo3D CLIs), and deployment (WebDev Publish instead of temporary links).
+- `references/godogen-stages/*.md` contains godogen's original stage instructions (visual-target, decomposer, architecture, scaffold, asset-planner, asset-gen, rembg, task-execution, quirks, scene-generation, capture, and the skill overview), reproduced substantially verbatim from the upstream repository, with inline "CLAUDE CODE OVERRIDE" notes added where this environment differs.
+- `references/claude-code-adaptations.md`, `SKILL.md`, and `templates/GameCanvas.tsx` are original adaptations for Claude Code. godogen's host shell (Vite + TypeScript) and verification approach (Chromium screenshot capture) are kept as designed; what changes is asset generation (a connected image-generation MCP instead of the paid Gemini/Grok/Tripo3D CLIs), the use of a pre-installed Chromium rather than a downloaded one, and delivery (build and commit, with deployment left to the user).
 
 ## License compliance
 

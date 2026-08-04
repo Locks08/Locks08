@@ -1,6 +1,6 @@
 # Asset Generator
 
-> **MANUS OVERRIDE:** Do NOT call the paid `asset_gen.py` / Gemini / Grok / Tripo3D CLIs described below. In Manus, generate all images with the built-in `generate` mode, then upload via `manus-upload-file --webdev` and use the returned `/manus-storage/...` URL as Babylon textures. For 3D, default to procedural meshes + generated textures; only use GLB models if the user supplies a Tripo3D key. See `references/manus-adaptations.md` §2. The text below conveys godogen's asset *intent* (model strengths, sizing, transparency) for reference only.
+> **CLAUDE CODE OVERRIDE:** Do NOT call the paid `asset_gen.py` / Gemini / Grok / Tripo3D CLIs described below. Generate all images with the connected image-generation MCP (`generate_image`, `generate_image_batch`), save the PNGs into `public/assets/`, and reference them by root-relative URL (`new Texture("/assets/x.png", scene)`). For 3D, default to procedural meshes + generated textures; `generate_3d` replaces Tripo3D when a real GLB is genuinely required. See `references/claude-code-adaptations.md` §2. The text below conveys godogen's asset *intent* (model strengths, sizing, transparency) for reference only.
 
 Generate PNG images (Gemini or xAI Grok) and GLB 3D models (Tripo3D) from text prompts.
 

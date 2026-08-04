@@ -1,0 +1,11 @@
+{
+  "name": "game-dev",
+  "displayName": "Game Dev (godogen for Claude Code)",
+  "version": "1.0.0",
+  "description": "Babylon.js のブラウザゲームを godogen パイプラインで一気通貫に作る。Claude Code のツール（Bash / Playwright / 画像生成 MCP）で動くように調整済み。",
+  "author": {
+    "name": "Locks08"
+  },
+  "repository": "https://github.com/Locks08/Locks08",
+  "keywords": ["game", "babylonjs", "godogen", "webgl", "vite"]
+}

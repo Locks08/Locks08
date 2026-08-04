@@ -1,6 +1,6 @@
 # Asset Planner
 
-> **MANUS OVERRIDE:** Ignore the dollar-budget gating below. In Manus the art step is always-on via built-in `generate` mode. Use this stage only to decide *what* assets the game needs (type, size, role); generate them per `references/manus-adaptations.md` §2.
+> **CLAUDE CODE OVERRIDE:** Ignore the dollar-budget gating below; the art step is always-on here. Generation still costs the user credits, so use this stage to decide *what* assets the game needs (type, size, role) and keep the set small and purposeful. Generate them per `references/claude-code-adaptations.md` §2.
 
 Analyze a game, decide what assets it needs, and generate them within a budget.
 

@@ -1,6 +1,6 @@
 # Background Removal
 
-> **MANUS OVERRIDE:** Instead of this background-removal CLI, prompt Manus built-in `generate` mode directly for a clean transparent/cutout background. Only fall back to programmatic removal if generation cannot produce clean alpha. See `references/manus-adaptations.md` §2.
+> **CLAUDE CODE OVERRIDE:** Instead of this background-removal CLI, prompt the image-generation MCP directly for a clean transparent/cutout background. If generation cannot produce clean alpha, use the MCP's `remove_background` tool. See `references/claude-code-adaptations.md` §2.
 
 Background removal CLI, prompting strategy, troubleshooting, and batch mode. Read when you're about to generate or process an asset that needs transparency.
 

@@ -1,6 +1,6 @@
 # Babylon Scaffold
 
-> **MANUS OVERRIDE:** Do NOT create godogen's standalone Vite/index.html/main.ts shell. The host is a Manus **WebDev** React project: `webdev_init_project`, `pnpm add @babylonjs/core`, then mount the full-screen `GameCanvas.tsx` (see `templates/GameCanvas.tsx`) as the `/` route. Gameplay still lives in framework-agnostic TS under `client/src/game/**`, matching this stage's intent. See `references/manus-adaptations.md` §1.
+> **CLAUDE CODE OVERRIDE:** This stage applies as written — godogen's standalone Vite/`index.html`/`main.ts` shell IS the host here. Two adjustments: start `npm run dev` as a **background** Bash command and poll the port instead of sleeping, and set `CHROME_BIN=/opt/pw-browsers/chromium` (pre-installed; never run `playwright install`) before the `scripts/capture.mjs` verification in step 9. See `references/claude-code-adaptations.md` §1.
 
 Create or refresh a Babylon.js + TypeScript + Vite project shell. This defines the runtime entrypoints and hot-reload contract; gameplay generation fills in `src/game/**`.
 

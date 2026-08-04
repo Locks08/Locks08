@@ -1,6 +1,6 @@
 # Visual Target
 
-> **MANUS OVERRIDE:** Generate the reference image using Manus built-in `generate` mode (not godogen's paid image CLI). Everything else about this stage's *intent* applies. See `references/manus-adaptations.md` §2.
+> **CLAUDE CODE OVERRIDE:** Generate the reference image with the connected image-generation MCP (`generate_image`), not godogen's paid image CLI. Save it under `assets/reference/` and log the prompt in `ASSETS.md`. Everything else about this stage's *intent* applies. See `references/claude-code-adaptations.md` §2.
 
 Generate a reference image of what the finished game looks like. Anchors art direction for scaffold, asset planner, and task agents.
 

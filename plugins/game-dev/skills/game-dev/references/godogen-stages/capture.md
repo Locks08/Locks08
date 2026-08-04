@@ -1,4 +1,4 @@
-> **MANUS OVERRIDE:** This godogen stage uses `scripts/capture.mjs` + a temporary Vite server + ffmpeg. In Manus, DO NOT use any of that. Verify visually with `webdev_take_screenshot` against the WebDev preview, type-check with `pnpm check`, and deliver via **WebDev Publish** (never a temporary link). See `references/manus-adaptations.md` §3–§4. The original text below is retained only to convey godogen's verification *intent* (trust the picture, prove real gameplay, no static clip).
+> **CLAUDE CODE OVERRIDE:** This stage applies almost as written — `scripts/capture.mjs` against the running dev server IS the verification path here. Changes: Chromium is pre-installed at `/opt/pw-browsers/chromium`, so set `CHROME_BIN` to it and never run `playwright install`; and **ignore the software-renderer warning** — this environment has no GPU, so SwiftShader/llvmpipe is expected and fine for verification. Read the resulting screenshot back and look at it. See `references/claude-code-adaptations.md` §3.
 
 # Browser Capture
 
