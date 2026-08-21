@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ソラマシン｜収益・導線エコシステム</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Shippori+Mincho:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #161d30;   /* night-navy */
+      --color-paper-2: #20293f;
+      --color-ink:     #f2eee3;   /* bone */
+      --color-muted:   #a9b2c6;   /* moon-grey */
+      --color-soft:    #7d879e;
+      --color-accent:  #f0ac52;   /* sun-shard amber */
+      --font-sans:     'Geist', 'Zen Kaku Gothic New', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', 'Shippori Mincho', serif;
+      --font-mono:     'Geist Mono', 'Zen Kaku Gothic New', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 1200px; width: 100%; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--color-muted);
+      max-width: 62ch;
+      margin-bottom: 1.5rem;
+    }
+
+    svg { width: 100%; min-width: 900px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Architecture · Sora Machine</p>
+    <h1>ソラマシン｜収益・導線エコシステム</h1>
+    <p class="subtitle">本編は無料のまま信頼をつくり、周辺コンテンツで課金する。1つの素材が三重に再利用され、集客へ還る構造。</p>
+
+    <svg viewBox="0 0 1000 632" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="soramachine-revenue-title soramachine-revenue-desc">
+      <title id="soramachine-revenue-title">ソラマシン 収益・導線エコシステム</title>
+      <desc id="soramachine-revenue-desc">TikTokの15秒クリップで集客し、無料の本編小説とnote無料パートで信頼をつくり、note有料パートを初回課金の関門として、FANBOX月額とBOOTH単品へ広げる導線。設定の正典canon.yamlがネタバレレベルF/Bを統制し、有料素材は三重再利用でTikTokへ還流し、制作ログとKPIがNotionに蓄積される。</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#a9b2c6"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#f0ac52"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7fa6dc"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#161d30"/>
+
+      <!-- ============ ZONES (painted first) ============ -->
+      <rect x="24" y="128" width="416" height="264" rx="8" fill="rgba(242,238,227,0.02)" stroke="rgba(242,238,227,0.10)" stroke-width="0.8"/>
+      <rect x="40" y="132" width="96" height="12" rx="2" fill="#161d30"/>
+      <text x="88" y="141" fill="rgba(242,238,227,0.40)" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.14em">FREE / TRUST</text>
+
+      <rect x="472" y="280" width="416" height="240" rx="8" fill="rgba(242,238,227,0.02)" stroke="rgba(242,238,227,0.10)" stroke-width="0.8"/>
+      <rect x="488" y="284" width="96" height="12" rx="2" fill="#161d30"/>
+      <text x="536" y="293" fill="rgba(242,238,227,0.40)" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.14em">PAID / TIERS</text>
+
+      <!-- ============ ARROWS (before boxes) ============ -->
+
+      <!-- A5 canon.yaml -> 本編小説 (governance, dashed) -->
+      <path d="M176,96 V112 q0,8 8,8 H336 q8,0 8,8 V160" fill="none" stroke="#a9b2c6" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <rect x="244" y="98" width="40" height="12" rx="2" fill="#161d30"/>
+      <text x="264" y="107" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">CANON</text>
+
+      <!-- A7 canon.yaml -> note 有料パート (spoiler gate, dashed) -->
+      <path d="M240,64 H600 q8,0 8,8 V312" fill="none" stroke="#a9b2c6" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <rect x="388" y="42" width="72" height="12" rx="2" fill="#161d30"/>
+      <text x="424" y="51" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">SPOILER F/B</text>
+
+      <!-- A6 本編小説 -> note 無料パート -->
+      <line x1="344" y1="224" x2="344" y2="312" stroke="#a9b2c6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="356" y="262" width="40" height="12" rx="2" fill="#161d30"/>
+      <text x="376" y="271" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">TRUST</text>
+
+      <!-- A1 TikTok -> note 無料パート -->
+      <line x1="200" y1="344" x2="264" y2="344" stroke="#a9b2c6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="214" y="322" width="36" height="12" rx="2" fill="#161d30"/>
+      <text x="232" y="331" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">REACH</text>
+
+      <!-- A2 note 無料 -> note 有料 (ACCENT: the conversion gate) -->
+      <line x1="424" y1="344" x2="488" y2="344" stroke="#a9b2c6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="428" y="322" width="56" height="12" rx="2" fill="#161d30"/>
+      <text x="456" y="331" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">CONVERT</text>
+
+      <!-- A3 note 有料 -> FANBOX -->
+      <line x1="648" y1="344" x2="712" y2="344" stroke="#a9b2c6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="660" y="322" width="40" height="12" rx="2" fill="#161d30"/>
+      <text x="680" y="331" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">RETAIN</text>
+
+      <!-- A4 FANBOX -> BOOTH -->
+      <line x1="792" y1="376" x2="792" y2="440" stroke="#a9b2c6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <rect x="804" y="400" width="44" height="12" rx="2" fill="#161d30"/>
+      <text x="826" y="409" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">UPSELL</text>
+
+      <!-- A8 note 有料 -> TikTok : triple-reuse return loop (ACCENT) -->
+      <path d="M568,376 V400 q0,8 -8,8 H96 q-8,0 -8,-8 V376" fill="none" stroke="#f0ac52" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <rect x="434" y="386" width="72" height="12" rx="2" fill="#161d30"/>
+      <text x="470" y="395" fill="#f0ac52" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">REUSE x3</text>
+
+      <!-- A9 TikTok -> 制作ログ / KPI (dashed, hops over the reuse loop) -->
+      <path d="M152,376 V400 a8,8 0 0,0 0,16 V440" fill="none" stroke="#a9b2c6" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <rect x="164" y="420" width="44" height="12" rx="2" fill="#161d30"/>
+      <text x="186" y="429" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">TRAFFIC</text>
+
+      <!-- A10 BOOTH -> 制作ログ / KPI (dashed) -->
+      <path d="M792,504 V520 q0,8 -8,8 H184 q-8,0 -8,-8 V504" fill="none" stroke="#a9b2c6" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <rect x="466" y="506" width="36" height="12" rx="2" fill="#161d30"/>
+      <text x="484" y="515" fill="#7d879e" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.06em">SALES</text>
+
+      <!-- ============ NODES ============ -->
+
+      <!-- canon.yaml — store -->
+      <rect x="40" y="32" width="200" height="64" rx="6" fill="#161d30"/>
+      <rect x="40" y="32" width="200" height="64" rx="6" fill="rgba(242,238,227,0.05)" stroke="#a9b2c6" stroke-width="1"/>
+      <rect x="48" y="40" width="40" height="12" rx="2" fill="transparent" stroke="rgba(169,178,198,0.50)" stroke-width="0.8"/>
+      <text x="68" y="49" fill="#a9b2c6" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.08em">CANON</text>
+      <text x="140" y="68" fill="#f2eee3" font-size="12" font-weight="600" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif" text-anchor="middle">設定の正典</text>
+      <text x="140" y="84" fill="#a9b2c6" font-size="9" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle">canon.yaml · F/B gate</text>
+
+      <!-- 本編小説 — backend -->
+      <rect x="264" y="160" width="160" height="64" rx="6" fill="#161d30"/>
+      <rect x="264" y="160" width="160" height="64" rx="6" fill="#20293f" stroke="#f2eee3" stroke-width="1"/>
+      <rect x="272" y="168" width="32" height="12" rx="2" fill="transparent" stroke="rgba(242,238,227,0.40)" stroke-width="0.8"/>
+      <text x="288" y="177" fill="#f2eee3" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.08em">FREE</text>
+      <text x="344" y="196" fill="#f2eee3" font-size="12" font-weight="600" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif" text-anchor="middle">本編小説</text>
+      <text x="344" y="212" fill="#a9b2c6" font-size="9" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle">無料 · IPの核</text>
+
+      <!-- TikTok — input -->
+      <rect x="40" y="312" width="160" height="64" rx="6" fill="#161d30"/>
+      <rect x="40" y="312" width="160" height="64" rx="6" fill="rgba(169,178,198,0.10)" stroke="#7d879e" stroke-width="1"/>
+      <rect x="48" y="320" width="28" height="12" rx="2" fill="transparent" stroke="rgba(125,135,158,0.50)" stroke-width="0.8"/>
+      <text x="62" y="329" fill="#7d879e" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.08em">SNS</text>
+      <text x="120" y="348" fill="#f2eee3" font-size="12" font-weight="600" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif" text-anchor="middle">TikTokクリップ</text>
+      <text x="120" y="364" fill="#a9b2c6" font-size="9" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle">15s · 集客</text>
+
+      <!-- note 無料パート — backend -->
+      <rect x="264" y="312" width="160" height="64" rx="6" fill="#161d30"/>
+      <rect x="264" y="312" width="160" height="64" rx="6" fill="#20293f" stroke="#f2eee3" stroke-width="1"/>
+      <rect x="272" y="320" width="32" height="12" rx="2" fill="transparent" stroke="rgba(242,238,227,0.40)" stroke-width="0.8"/>
+      <text x="288" y="329" fill="#f2eee3" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.08em">FREE</text>
+      <text x="344" y="348" fill="#f2eee3" font-size="12" font-weight="600" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif" text-anchor="middle">note 無料パート</text>
+      <text x="344" y="364" fill="#a9b2c6" font-size="9" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle">考察 · 価値の証明</text>
+
+      <!-- note 有料パート — FOCAL -->
+      <rect x="488" y="312" width="160" height="64" rx="6" fill="#161d30"/>
+      <rect x="488" y="312" width="160" height="64" rx="6" fill="rgba(240,172,82,0.12)" stroke="#f0ac52" stroke-width="1"/>
+      <rect x="496" y="320" width="32" height="12" rx="2" fill="transparent" stroke="rgba(240,172,82,0.50)" stroke-width="0.8"/>
+      <text x="512" y="329" fill="#f0ac52" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.08em">LITE</text>
+      <text x="568" y="348" fill="#f2eee3" font-size="12" font-weight="600" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif" text-anchor="middle">note 有料パート</text>
+      <text x="568" y="364" fill="#a9b2c6" font-size="9" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle">¥300-500 · 初回課金</text>
+
+      <!-- FANBOX — external -->
+      <rect x="712" y="312" width="160" height="64" rx="6" fill="#161d30"/>
+      <rect x="712" y="312" width="160" height="64" rx="6" fill="rgba(242,238,227,0.03)" stroke="rgba(242,238,227,0.30)" stroke-width="1"/>
+      <rect x="720" y="320" width="28" height="12" rx="2" fill="transparent" stroke="rgba(242,238,227,0.22)" stroke-width="0.8"/>
+      <text x="734" y="329" fill="#7d879e" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.08em">PRO</text>
+      <text x="792" y="348" fill="#f2eee3" font-size="12" font-weight="600" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif" text-anchor="middle">FANBOX 月額</text>
+      <text x="792" y="364" fill="#a9b2c6" font-size="9" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle">Zeks + Grim 同梱</text>
+
+      <!-- BOOTH — external -->
+      <rect x="712" y="440" width="160" height="64" rx="6" fill="#161d30"/>
+      <rect x="712" y="440" width="160" height="64" rx="6" fill="rgba(242,238,227,0.03)" stroke="rgba(242,238,227,0.30)" stroke-width="1"/>
+      <rect x="720" y="448" width="36" height="12" rx="2" fill="transparent" stroke="rgba(242,238,227,0.22)" stroke-width="0.8"/>
+      <text x="738" y="457" fill="#7d879e" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.08em">ELITE</text>
+      <text x="792" y="476" fill="#f2eee3" font-size="12" font-weight="600" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif" text-anchor="middle">BOOTH 単品</text>
+      <text x="792" y="492" fill="#a9b2c6" font-size="9" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle">ZINE · 音声</text>
+
+      <!-- 制作ログ / KPI — store -->
+      <rect x="40" y="440" width="160" height="64" rx="6" fill="#161d30"/>
+      <rect x="40" y="440" width="160" height="64" rx="6" fill="rgba(242,238,227,0.05)" stroke="#a9b2c6" stroke-width="1"/>
+      <rect x="48" y="448" width="28" height="12" rx="2" fill="transparent" stroke="rgba(169,178,198,0.50)" stroke-width="0.8"/>
+      <text x="62" y="457" fill="#a9b2c6" font-size="7" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle" letter-spacing="0.08em">OPS</text>
+      <text x="120" y="476" fill="#f2eee3" font-size="12" font-weight="600" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif" text-anchor="middle">制作ログ / KPI</text>
+      <text x="120" y="492" fill="#a9b2c6" font-size="9" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" text-anchor="middle">Notion · 週次</text>
+
+      <!-- ============ LEGEND ============ -->
+      <line x1="40" y1="552" x2="960" y2="552" stroke="rgba(242,238,227,0.10)" stroke-width="0.8"/>
+      <text x="40" y="568" fill="#a9b2c6" font-size="8" font-family="'Geist Mono', 'Zen Kaku Gothic New', monospace" letter-spacing="0.18em">LEGEND</text>
+
+      <rect x="40" y="580" width="14" height="10" rx="2" fill="rgba(240,172,82,0.12)" stroke="#f0ac52" stroke-width="1"/>
+      <text x="60" y="588" fill="#a9b2c6" font-size="8" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif">初回課金の関門</text>
+
+      <rect x="232" y="580" width="14" height="10" rx="2" fill="#20293f" stroke="#f2eee3" stroke-width="1"/>
+      <text x="252" y="588" fill="#a9b2c6" font-size="8" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif">無料コンテンツ</text>
+
+      <rect x="424" y="580" width="14" height="10" rx="2" fill="rgba(242,238,227,0.03)" stroke="rgba(242,238,227,0.30)" stroke-width="1"/>
+      <text x="444" y="588" fill="#a9b2c6" font-size="8" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif">有料階層</text>
+
+      <rect x="616" y="580" width="14" height="10" rx="2" fill="rgba(169,178,198,0.10)" stroke="#7d879e" stroke-width="1"/>
+      <text x="636" y="588" fill="#a9b2c6" font-size="8" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif">集客チャネル</text>
+
+      <rect x="808" y="580" width="14" height="10" rx="2" fill="rgba(242,238,227,0.05)" stroke="#a9b2c6" stroke-width="1"/>
+      <text x="828" y="588" fill="#a9b2c6" font-size="8" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif">設定 · 計測データ</text>
+
+      <line x1="40" y1="604" x2="54" y2="604" stroke="#f0ac52" stroke-width="1.2"/>
+      <text x="60" y="608" fill="#a9b2c6" font-size="8" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif">三重再利用の還流</text>
+
+      <line x1="232" y1="604" x2="246" y2="604" stroke="#a9b2c6" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="252" y="608" fill="#a9b2c6" font-size="8" font-family="'Geist', 'Zen Kaku Gothic New', sans-serif">統制 · 計測（受動）</text>
+    </svg>
+  </div>
+</body>
+</html>
