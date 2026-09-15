@@ -1,0 +1,303 @@
+# ============================================================================
+# canon.yaml — ソラマシン 唯一の真実（Single Source of Truth）
+#
+# このファイルは以下5スキルが参照する土台。ここが揺れると全部が揺れる。
+#   character-voice-spec    … 性格・話し方・感情の幅 → 声パラメータ
+#   soramachine-visual-spec … 外見・色 → 画像生成の appearance_lock
+#   note-article-factory    … 固有名詞・spoiler level → 記事整形
+#   yukino-tarot-engine     … ユキノの口調・世界観用語 → リーディング
+#   ops-kpi-log             … open_questions への「要決定」流し先
+#
+# 【編集ルール】
+#   - 値を埋めてよいのは作者本人のみ。AIは空欄を推測で埋めない。
+#   - AIは status / spoiler_level を独断で上げない（DRAFT→CANON は承認制）。
+#   - 記事や画像が canon と食い違ったら、canon を直すのではなく先に報告する。
+#   - 決められない項目は空のまま残し、open_questions に積む。空欄も情報である。
+#
+# 【status の意味】
+#   TBD   … 未着手。まだ決めていない
+#   DRAFT … 暫定値が入っている。変わりうる。公開物に使うときは要注意
+#   CANON … 確定。作者承認済み。以降これを唯一の根拠として全スキルが引く
+# ============================================================================
+
+meta:
+  version: 0.1.0
+  updated: ""                 # YYYY-MM-DD
+  maintainer: ""
+  note: "空欄は「未決定」を意味する。AIが埋めてはならない"
+
+# ----------------------------------------------------------------------------
+# ネタバレ階層の定義
+#
+# ⚠️ 既存スキルは F / B / A / S を定義なしで使用している。
+#    以下は「F < B < A < S の順に重い」という一般的なランク表記からの【推測】。
+#    作者が確認し、status を CANON にすること。
+# ----------------------------------------------------------------------------
+spoiler_levels:
+  status: DRAFT               # ← 作者確認まで DRAFT
+  definitions:
+    F:
+      label: ""               # 例: "誰に見せてもよい。既に公開済みの情報"
+      public_ok: true         # note無料 / TikTok / X / BOOTH商品ページ
+    B:
+      label: ""               # 例: "序盤で明かされる。公開してよい"
+      public_ok: true
+    A:
+      label: ""               # 例: "中盤以降の重要情報。クローズド面のみ"
+      public_ok: false        # FANBOX等の有料/限定面で注意書き付き
+    S:
+      label: ""               # 例: "核心。公開物に一切出さない"
+      public_ok: false        # 無料・有料を問わず公開物に出さない
+
+# ----------------------------------------------------------------------------
+# 表記統制
+#
+# ⚠️ 既存スキル間で実際に表記が揺れている（下記 open_questions Q2 参照）。
+#    canonical を1つ決め、他は全て alias として吸収する。
+# ----------------------------------------------------------------------------
+naming:
+  status: TBD
+  rules: []                   # 例: 日本語本文でのキャラ表記は日本語名に統一、など
+  # 各キャラ・用語の canonical / aliases は characters / terms 側に持つ
+
+# ----------------------------------------------------------------------------
+# 世界観の骨格
+# ----------------------------------------------------------------------------
+world:
+  status: TBD
+  logline: ""                 # 1〜2文。作品を1行で言い切る
+  setting: ""                 # 舞台・時代・場所
+  core_rules: []              # 世界の物理法則・禁則。ここが矛盾の温床になるので明文化する
+  themes: []                  # 作品が扱う主題
+  tone: ""                    # 語りの温度。visual-spec の style_lock の根拠にもなる
+  palette:                    # 作品全体の色設計 → visuals.yaml が引く
+    status: TBD
+    colors: []                # 例: ["#0B1026", "#E8D7A2"]
+    rationale: ""
+
+# ----------------------------------------------------------------------------
+# 固有名詞辞書
+#
+# note-article-factory / yukino-tarot-engine が「世界観用語」として引く。
+# 公開記事・無料リーディングに出せるかは spoiler_level で判定される。
+# ----------------------------------------------------------------------------
+terms:
+  # テンプレート（1件をコピーして使う）
+  _template:
+    canonical: ""             # 正式表記
+    aliases: []               # 表記ゆれ・略称・英語表記
+    category: ""              # concept / artifact / faction / place / phenomenon / currency
+    definition: ""            # 1〜3文。ここが唯一の定義
+    first_appearance: ""      # 初出（arc / 話数）
+    spoiler_level: TBD        # F / B / A / S
+    status: TBD
+    related: []               # 関連する用語キー
+
+  # 以下、ユーザー設定で言及されている語。定義は全て作者が記入する。
+  ark_soramachine:  { canonical: "アーク・ソラマシン", aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+  astral_code:      { canonical: "アストラル・コード", aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+  astral_mural:     { canonical: "アストラル壁画",     aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+  gadget_crash:     { canonical: "ガジェット・クラッシュ", aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+  hydra:            { canonical: "HYDRA",              aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+  seika:            { canonical: "星貨",               aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+  shadow_echo:      { canonical: "Shadow Echo",        aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+  missing_emotion_file: { canonical: "Missing Emotion File", aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+  kakera_no_yume:   { canonical: "欠片の夢",           aliases: [], category: "", definition: "", spoiler_level: TBD, status: TBD }
+
+# ----------------------------------------------------------------------------
+# キャラクター定義
+#
+# 各フィールドの消費先：
+#   personality / speech / emotion_range / voice_direction → character-voice-spec
+#   appearance / palette                                   → soramachine-visual-spec
+#   revenue_role                                           → note-article-factory
+#   speech（ユキノ）                                        → yukino-tarot-engine
+# ----------------------------------------------------------------------------
+characters:
+
+  _template:
+    canonical: ""             # 正式表記（表記統制の基準）
+    aliases: []               # 別表記・英語名・愛称
+    role: ""                  # 物語上の役割
+    revenue_role: ""          # 集客 / 分析 / 深堀り / 転換 / 本編ドライバ
+    personality: ""           # 性格。声と絵の両方がここから導かれる
+    speech: ""                # 話し方・一人称・語尾・口調の癖
+    emotion_range: ""         # 感情の幅。声の stability 設定の根拠
+    voice_direction: ""       # 落ち着き / 鋭さ / 温度
+    appearance: ""            # 外見・衣装。visuals.yaml の appearance_lock の根拠
+    palette: []               # キャラ固有色
+    relations: {}             # 他キャラとの関係。キー: 関係の説明
+    spoiler_level: TBD
+    status: TBD
+
+  aro:
+    canonical: ""             # ⚠️ open_questions Q1・Q2 参照。表記未確定
+    aliases: ["Aro", "Arrokoth Arclide"]
+    role: "主人公・太陽の欠片"                        # 既存スキル記載（要確認）
+    revenue_role: "本編ドライバ"                      # note-article-factory 記載
+    personality: ""
+    speech: ""
+    emotion_range: ""
+    voice_direction: "若く芯がある・熱はあるが叫ばない"  # 既存スキル記載（要確認）
+    appearance: ""
+    palette: []
+    relations: {}
+    spoiler_level: TBD
+    status: DRAFT
+
+  yukino:
+    canonical: "ユキノ"
+    aliases: ["Yukino"]
+    role: "夢・妖精の欠片／感情と占いの担い手"
+    revenue_role: "転換・商品"
+    personality: ""
+    speech: ""                # ⚠️ 最優先。yukino-tarot-engine が直接引く
+    emotion_range: ""
+    voice_direction: "柔らかく寄り添う・夢のような揺らぎ"
+    appearance: ""            # ⚠️ 最優先。第一商品のカード絵・アイキャッチが待っている
+    palette: []
+    relations: {}
+    spoiler_level: F
+    status: DRAFT
+
+  nero:
+    canonical: "ネロ"
+    aliases: ["Nero"]
+    role: "入口役"
+    revenue_role: "集客・流入"
+    personality: ""
+    speech: ""
+    emotion_range: ""
+    voice_direction: "軽快・入口役"
+    appearance: ""
+    palette: []
+    relations: {}
+    spoiler_level: F
+    status: DRAFT
+
+  grim:
+    canonical: "グリム"
+    aliases: ["Grim"]
+    role: "記録者"
+    revenue_role: "分析"
+    personality: ""
+    speech: ""
+    emotion_range: ""
+    voice_direction: "抑制的・記録者・低い温度"
+    appearance: ""
+    palette: []
+    relations: {}
+    spoiler_level: F
+    status: DRAFT
+
+  zekkusu:
+    canonical: ""             # ⚠️ Zeks / Zekkusu / ゼクス が混在。open_questions Q2
+    aliases: ["Zeks", "Zekkusu", "ゼクス"]
+    role: "秩序・贖罪の影"
+    revenue_role: "深堀り"
+    personality: ""
+    speech: ""
+    emotion_range: ""
+    voice_direction: "重厚・秩序・贖罪の影"
+    appearance: ""
+    palette: []
+    relations: {}
+    spoiler_level: B
+    status: DRAFT
+
+  kai:
+    canonical: "カイ"
+    aliases: ["Kai"]
+    role: "設計者"
+    revenue_role: ""
+    personality: ""
+    speech: ""
+    emotion_range: ""
+    voice_direction: "明晰・設計者・理知的"
+    appearance: ""
+    palette: []
+    relations: {}
+    spoiler_level: B
+    status: DRAFT
+
+  layla:
+    canonical: ""
+    aliases: ["Layla"]
+    role: ""                  # 既存スキルも「canon参照」としており未定
+    revenue_role: ""
+    personality: ""
+    speech: ""
+    emotion_range: ""
+    voice_direction: ""
+    appearance: ""
+    palette: []
+    relations: {}
+    spoiler_level: TBD
+    status: TBD
+
+  nepha:
+    canonical: ""
+    aliases: ["Nepha"]
+    role: "敵対アーキビスト"
+    revenue_role: ""
+    personality: ""
+    speech: ""
+    emotion_range: ""
+    voice_direction: "冷たい・支配的"
+    appearance: ""
+    palette: []
+    relations: {}
+    spoiler_level: A          # 敵対キャラ。公開面での扱いは要確認
+    status: DRAFT
+
+# ----------------------------------------------------------------------------
+# 構成・時系列
+# spoiler_level を判定する根拠になる。どこまで公開済みかがここで決まる。
+# ----------------------------------------------------------------------------
+arcs:
+  status: TBD
+  published_through: ""       # 公開済みの最終地点。これより後は原則 A 以上
+  list: []
+    # - key: ""
+    #   title: ""
+    #   summary: ""
+    #   spoiler_level: TBD
+    #   status: TBD
+
+# ----------------------------------------------------------------------------
+# 要決定リスト
+#
+# ops-kpi-log の日次ログで「世界観の判断保留」が出たらここへ積む。
+# AIはここに項目を追加してよいが、答えを書き込んではならない。
+# ----------------------------------------------------------------------------
+open_questions:
+
+  - id: Q1
+    question: "主人公の正式表記は？ ユーザーのカスタムプロンプトは「ジン」をソラマシン用語として挙げているが、既存4スキルには「ジン」が一度も登場せず、主人公は「Aro / Arrokoth Arclide」と記載されている。別人物か、改名か、表記ゆれか。"
+    blocks: ["characters.aro", "naming"]
+    raised: "2026-09-15"
+    status: OPEN
+
+  - id: Q2
+    question: "キャラ表記を英語・日本語のどちらに統一するか。既存スキル内で Zeks / Zekkusu / ゼクス が混在し、Aro / Arrokoth Arclide も併記されている。canonical を1つ決める必要がある。"
+    blocks: ["naming", "characters.zekkusu", "characters.aro"]
+    raised: "2026-09-15"
+    status: OPEN
+
+  - id: Q3
+    question: "spoiler_levels の F / B / A / S の正式な定義は？ 既存4スキルが定義なしで使用している。現在の定義欄は『F<B<A<S の順に重い』という推測に基づく DRAFT。"
+    blocks: ["spoiler_levels"]
+    raised: "2026-09-15"
+    status: OPEN
+
+  - id: Q4
+    question: "Layla の役割・立ち位置は？ character-voice-spec が『canon参照』としているが canon 側も未定のため、参照先が存在しない状態。"
+    blocks: ["characters.layla"]
+    raised: "2026-09-15"
+    status: OPEN
+
+  - id: Q5
+    question: "Nepha（敵対）を公開面のビジュアル・記事に出してよいか。現在 spoiler_level: A を暫定で置いている。"
+    blocks: ["characters.nepha"]
+    raised: "2026-09-15"
+    status: OPEN
