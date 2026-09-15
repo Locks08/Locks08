@@ -74,7 +74,7 @@ python3 {S} chat --thread-id <eyecatch_thread> \
 
 - **文字は画像に焼き込まない。** note のタイトルと重なるため。文字入れが必要なら別レイヤーで後乗せ。
 - 記事の spoiler level を確認し、**無料記事のアイキャッチは F/B のみ**。
-- 担い手キャラは `note-article-factory` のロール表に合わせる（入口=Nero / 解析=Grim / 深掘り=Zeks / 商品=Yukino）。
+- 担い手キャラは `note-article-factory` のロール表に合わせる（入口=ネロ / 解析=グリム / 深掘り=ゼクス / 商品=ユキノ）。
 - TikTok 用に 9:16 が要るときは、同スレッドで比率だけ変えて追加生成する（世界観が揃う）。
 
 ---
@@ -94,7 +94,7 @@ python3 {S} chat --thread-id <webtoon_thread> \
 python3 {S} chat --thread-id <webtoon_thread> \
   --subjects '[{"url":"<A_url>","asset_id":"<A_id>","display_name":"Aro"},
                {"url":"<B_url>","asset_id":"<B_id>","display_name":"Yukino"}]' \
-  --prompt "AroとYukinoが向かい合って会話している。<variants.webtoon.style_lock>" \
+  --prompt "アロコスアークライドとユキノが向かい合って会話している。<variants.webtoon.style_lock>" \
   --json --download
 ```
 

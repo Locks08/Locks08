@@ -2,6 +2,7 @@
 #
 # character-voice-spec の voices.yaml と対になる。声=voices.yaml / 絵=visuals.yaml。
 # 唯一の真実は soramachine-canon/canon.yaml。ここで設定を発明しない。
+# 表記規約：display は日本語（canon の canonical）、subject.display_name は ASCII（技術識別子）。
 # status: DRAFT → CANON への昇格はユーザー承認が必須。
 
 version: 0.1.0
@@ -37,7 +38,7 @@ style:
 characters:
 
   aro:
-    display: "Aro / Arrokoth Arclide"
+    display: "アロコスアークライド"
     role: "主人公・太陽の欠片"
     subject: { asset_id: "", url: "", display_name: "Aro", channel: "" }
     appearance_lock: ""     # canon 準拠。未定なら空のまま
@@ -45,7 +46,7 @@ characters:
     status: DRAFT
 
   yukino:
-    display: "Yukino"
+    display: "ユキノ"
     role: "夢・妖精の欠片／占い導線（第一商品の担い手）"
     subject: { asset_id: "", url: "", display_name: "Yukino", channel: "" }
     appearance_lock: ""
@@ -54,7 +55,7 @@ characters:
     notes: "yukino-tarot-engine のカード絵・アイキャッチで最も使用頻度が高い。最優先で確定する"
 
   nero:
-    display: "Nero"
+    display: "ネロ"
     role: "集客・流入・入口役"
     subject: { asset_id: "", url: "", display_name: "Nero", channel: "" }
     appearance_lock: ""
@@ -63,7 +64,7 @@ characters:
     notes: "note/TikTok の入口記事に多用。優先度2"
 
   grim:
-    display: "Grim"
+    display: "グリム"
     role: "記録者・分析"
     subject: { asset_id: "", url: "", display_name: "Grim", channel: "" }
     appearance_lock: ""
@@ -71,7 +72,7 @@ characters:
     status: DRAFT
 
   zekkusu:
-    display: "Zeks / Zekkusu"
+    display: "ゼクス"
     role: "深掘り・秩序・贖罪の影"
     subject: { asset_id: "", url: "", display_name: "Zeks", channel: "" }
     appearance_lock: ""
@@ -79,7 +80,7 @@ characters:
     status: DRAFT
 
   kai:
-    display: "Kai"
+    display: "カイ"
     role: "設計者・理知"
     subject: { asset_id: "", url: "", display_name: "Kai", channel: "" }
     appearance_lock: ""
@@ -87,7 +88,7 @@ characters:
     status: DRAFT
 
   layla:
-    display: "Layla"
+    display: "レイラ"
     role: ""                # canon 参照
     subject: { asset_id: "", url: "", display_name: "Layla", channel: "" }
     appearance_lock: ""
@@ -95,11 +96,11 @@ characters:
     status: DRAFT
 
   nepha:
-    display: "Nepha"
+    display: "ネファ"
     role: "敵対アーキビスト"
     subject: { asset_id: "", url: "", display_name: "Nepha", channel: "" }
     appearance_lock: ""
-    spoiler_level: A       # 敵対キャラ。公開面での扱いは要確認
+    spoiler_level: A       # 敵対キャラ。canon open_questions Q5 で確認中
     status: DRAFT
 
 # ---------------------------------------------------------------

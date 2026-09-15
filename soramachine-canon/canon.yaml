@@ -29,25 +29,44 @@ meta:
 # ----------------------------------------------------------------------------
 # ネタバレ階層の定義
 #
-# ⚠️ 既存スキルは F / B / A / S を定義なしで使用している。
-#    以下は「F < B < A < S の順に重い」という一般的なランク表記からの【推測】。
-#    作者が確認し、status を CANON にすること。
+# 既存4スキルは F / B / A / S を定義なしで使用していた。2026-09-15 に作者判断で確定。
+# 設計方針：重要度ではなく「情報の所在」で判定する（迷う時間をゼロにするため）。
+# 頭文字は Free / Basic / Advanced / Secret。
 # ----------------------------------------------------------------------------
 spoiler_levels:
-  status: DRAFT               # ← 作者確認まで DRAFT
+  status: CANON
+  decided: "2026-09-15"
+  principle: >-
+    「どれくらい重要か」ではなく「その情報が今どこにあるか」で判定する。
+    重要度で測ると毎回悩んで運用が止まるが、所在で測れば数秒で決まる。
   definitions:
     F:
-      label: ""               # 例: "誰に見せてもよい。既に公開済みの情報"
-      public_ok: true         # note無料 / TikTok / X / BOOTH商品ページ
-    B:
-      label: ""               # 例: "序盤で明かされる。公開してよい"
+      label: "Free｜公開済み"
+      test: "既に本編・宣伝・SNSで自分から出しているか？ → YES なら F"
       public_ok: true
+      surfaces: "全面可（note無料 / TikTok / X / Threads / BOOTH商品ページ / アイキャッチ）"
+    B:
+      label: "Basic｜前提設定"
+      test: "作品の導入で説明される類の、知っても驚きが減らない情報か？ → YES なら B"
+      public_ok: true
+      surfaces: "全面可。世界観の入口として積極的に使ってよい"
     A:
-      label: ""               # 例: "中盤以降の重要情報。クローズド面のみ"
-      public_ok: false        # FANBOX等の有料/限定面で注意書き付き
+      label: "Advanced｜中盤以降"
+      test: "読者が自分で辿り着くことに価値がある情報か？ → YES なら A"
+      public_ok: false
+      surfaces: >-
+        原則クローズド面（FANBOX / note有料パート）。公開面に出す場合は
+        ネタバレ注意書きを直前に明示し、限定的に。画像の場合は注意書きを隣接させる
     S:
-      label: ""               # 例: "核心。公開物に一切出さない"
-      public_ok: false        # 無料・有料を問わず公開物に出さない
+      label: "Secret｜核心"
+      test: "これ一つで物語の根幹が割れるか？（正体・真相・結末） → YES なら S"
+      public_ok: false
+      surfaces: "公開物に一切出さない。有料・クローズドも含め、作者が明示的に解禁するまで不可"
+  rules:
+    - "未分類の情報は A として扱う。迷ったら必ず重い方へ倒す"
+    - "重くする方向（F→S）の変更は誰でもいつでも可。軽くする方向（S→F）は作者承認必須"
+    - "AIは独断で軽くしない。重くする提案は出してよい"
+    - "同じ事実でも文脈で階層が変わる場合は、重い方を採用する"
 
 # ----------------------------------------------------------------------------
 # 表記統制
@@ -56,8 +75,15 @@ spoiler_levels:
 #    canonical を1つ決め、他は全て alias として吸収する。
 # ----------------------------------------------------------------------------
 naming:
-  status: TBD
-  rules: []                   # 例: 日本語本文でのキャラ表記は日本語名に統一、など
+  status: CANON
+  decided: "2026-09-15"
+  rules:
+    - "作品表記は日本語に統一する。本文・記事・セリフ・画像内の文字・公開物すべて"
+    - "英語表記は alias として保持するだけで、公開物の本文には使わない"
+    - >-
+      例外：技術識別子は ASCII（ローマ字）のまま使う。
+      YAMLのキー / ファイル名 / Lovart の display_name / ElevenLabs のラベルなど。
+      これらは公開物ではないため日本語統一の対象外
   # 各キャラ・用語の canonical / aliases は characters / terms 側に持つ
 
 # ----------------------------------------------------------------------------
@@ -131,8 +157,8 @@ characters:
     status: TBD
 
   aro:
-    canonical: ""             # ⚠️ open_questions Q1・Q2 参照。表記未確定
-    aliases: ["Aro", "Arrokoth Arclide"]
+    canonical: "アロコスアークライド"
+    aliases: ["Aro", "Arrokoth Arclide"]   # 公開物の本文には使わない（naming ルール）
     role: "主人公・太陽の欠片"                        # 既存スキル記載（要確認）
     revenue_role: "本編ドライバ"                      # note-article-factory 記載
     personality: ""
@@ -142,8 +168,8 @@ characters:
     appearance: ""
     palette: []
     relations: {}
-    spoiler_level: TBD
-    status: DRAFT
+    spoiler_level: F
+    status: CANON             # 表記のみ確定。中身（性格・外見等）は引き続き空欄
 
   yukino:
     canonical: "ユキノ"
@@ -191,8 +217,8 @@ characters:
     status: DRAFT
 
   zekkusu:
-    canonical: ""             # ⚠️ Zeks / Zekkusu / ゼクス が混在。open_questions Q2
-    aliases: ["Zeks", "Zekkusu", "ゼクス"]
+    canonical: "ゼクス"
+    aliases: ["Zeks", "Zekkusu"]
     role: "秩序・贖罪の影"
     revenue_role: "深堀り"
     personality: ""
@@ -221,7 +247,7 @@ characters:
     status: DRAFT
 
   layla:
-    canonical: ""
+    canonical: "レイラ"       # ⚠️ 音写の当て。open_questions Q6
     aliases: ["Layla"]
     role: ""                  # 既存スキルも「canon参照」としており未定
     revenue_role: ""
@@ -236,7 +262,7 @@ characters:
     status: TBD
 
   nepha:
-    canonical: ""
+    canonical: "ネファ"       # ⚠️ 音写の当て。open_questions Q6
     aliases: ["Nepha"]
     role: "敵対アーキビスト"
     revenue_role: ""
@@ -272,32 +298,55 @@ arcs:
 # ----------------------------------------------------------------------------
 open_questions:
 
+  # ---- 解決済み（履歴として残す。消さない） ----
+
   - id: Q1
-    question: "主人公の正式表記は？ ユーザーのカスタムプロンプトは「ジン」をソラマシン用語として挙げているが、既存4スキルには「ジン」が一度も登場せず、主人公は「Aro / Arrokoth Arclide」と記載されている。別人物か、改名か、表記ゆれか。"
+    question: "主人公の正式表記は？（ユーザーのカスタムプロンプトには「ジン」があるが、既存4スキルには登場せず Aro / Arrokoth Arclide と記載されていた）"
+    answer: "アロコスアークライド。英語表記 Aro / Arrokoth Arclide は alias として保持し、公開物の本文には使わない"
     blocks: ["characters.aro", "naming"]
     raised: "2026-09-15"
-    status: OPEN
+    resolved: "2026-09-15"
+    status: RESOLVED
+    note: "「ジン」は canon に採用されなかった。別人物・旧名・無関係のいずれかは未確認のため、再登場したら Q として再度立てる"
 
   - id: Q2
-    question: "キャラ表記を英語・日本語のどちらに統一するか。既存スキル内で Zeks / Zekkusu / ゼクス が混在し、Aro / Arrokoth Arclide も併記されている。canonical を1つ決める必要がある。"
+    question: "キャラ表記を英語・日本語のどちらに統一するか（Zeks / Zekkusu / ゼクス が混在していた）"
+    answer: "日本語表記に統一。ただし技術識別子（YAMLキー / ファイル名 / Lovart display_name / ElevenLabs ラベル）は ASCII のまま"
     blocks: ["naming", "characters.zekkusu", "characters.aro"]
     raised: "2026-09-15"
-    status: OPEN
+    resolved: "2026-09-15"
+    status: RESOLVED
 
   - id: Q3
-    question: "spoiler_levels の F / B / A / S の正式な定義は？ 既存4スキルが定義なしで使用している。現在の定義欄は『F<B<A<S の順に重い』という推測に基づく DRAFT。"
+    question: "spoiler_levels の F / B / A / S の正式な定義は？（既存4スキルが定義なしで使用していた）"
+    answer: >-
+      Free / Basic / Advanced / Secret。重要度ではなく「情報の所在」で判定する運用設計。
+      未分類は A 扱い、重くする変更は自由・軽くする変更は作者承認必須、という非対称ルールを付けた
     blocks: ["spoiler_levels"]
     raised: "2026-09-15"
-    status: OPEN
+    resolved: "2026-09-15"
+    status: RESOLVED
+    note: "作者から「推奨で決めてよい」と委任された判断。運用して合わなければ変更可"
+
+  # ---- 未解決 ----
 
   - id: Q4
-    question: "Layla の役割・立ち位置は？ character-voice-spec が『canon参照』としているが canon 側も未定のため、参照先が存在しない状態。"
+    question: "レイラの役割・立ち位置は？ character-voice-spec が『canon参照』としているが canon 側も未定のため、参照先が存在しない状態。"
     blocks: ["characters.layla"]
     raised: "2026-09-15"
     status: OPEN
 
   - id: Q5
-    question: "Nepha（敵対）を公開面のビジュアル・記事に出してよいか。現在 spoiler_level: A を暫定で置いている。"
+    question: "ネファ（敵対）を公開面のビジュアル・記事に出してよいか。現在 spoiler_level: A を暫定で置いている。"
     blocks: ["characters.nepha"]
     raised: "2026-09-15"
     status: OPEN
+
+  - id: Q6
+    question: >-
+      日本語表記の確定待ちが2件。(a) レイラ / ネファ は Layla / Nepha からの音写の当てで、作者未確認。
+      (b) アロコスアークライドの短縮形（記事見出しやセリフで必ず必要になる）を「アロ」とするか、別の呼称にするか。
+    blocks: ["characters.layla", "characters.nepha", "characters.aro"]
+    raised: "2026-09-15"
+    status: OPEN
+    note: "(b) は note の見出しや Webtoon のセリフで毎回使うため、記事を書き始める前に決めたい"

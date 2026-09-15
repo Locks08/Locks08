@@ -52,11 +52,11 @@ voice-spec  visual-spec     factory        engine
 
 依存関係の下流ほど後回しでよい。**上から3つが埋まれば制作が動き出す。**
 
-1. **`open_questions` Q1〜Q3 の解消** — 表記とネタバレ階層。ここが未定だと全ての判断が保留になる
+1. ~~`open_questions` Q1〜Q3 の解消~~ — **完了（2026-09-15）**
 2. **`characters.yukino`** の `speech` / `appearance` — 第一商品（タロット）が直接待っている
 3. **`world.logline` / `tone` / `palette`** — 画風ロックと記事トーンの根拠
 4. `terms.*` の `definition` と `spoiler_level` — 記事を書き始める前に
-5. `characters` の残り — 登場順・使用頻度の高い順に（Nero → Grim → Aro → Zeks → Kai）
+5. `characters` の残り — 登場順・使用頻度の高い順に（ネロ → グリム → アロコスアークライド → ゼクス → カイ）
 6. `arcs` — 公開範囲が動くたびに更新
 
 ## 構文チェック
@@ -65,7 +65,17 @@ voice-spec  visual-spec     factory        engine
 python3 -c "import yaml; yaml.safe_load(open('soramachine-canon/canon.yaml')); print('OK')"
 ```
 
-## 現在の状態
+## 現在の状態（2026-09-15）
 
-全項目 `TBD` / `DRAFT`。**確定（CANON）項目はまだ1つも無い。**
-`open_questions` に5件の要決定事項が積まれている（Q1〜Q5）。
+**確定（CANON）**
+- `naming` … 作品表記は日本語に統一。技術識別子（YAMLキー / ファイル名 / Lovart の display_name / ElevenLabs ラベル）は ASCII
+- `spoiler_levels` … F=Free / B=Basic / A=Advanced / S=Secret。重要度ではなく「情報の所在」で判定
+- `characters.aro.canonical` … アロコスアークライド
+
+**未着手**
+- 全キャラの `personality` / `speech` / `appearance` 等の中身
+- `world` / `terms` の定義
+- `arcs`
+
+**要決定**：Q4（レイラの役割）/ Q5（ネファの公開可否）/ Q6（音写の確認と主人公の短縮形）
+解決済み Q1〜Q3 は履歴として `open_questions` に残してある。

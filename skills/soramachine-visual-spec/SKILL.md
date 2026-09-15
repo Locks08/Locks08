@@ -28,15 +28,20 @@ Lovart API を直接叩かない（`lovart-api` の RULE #0 に従い、必ず�
 **ここで新しい設定を発明しない。** canon が TBD のキャラは暫定値に `DRAFT` を付け、確定はユーザー承認を待つ。
 canon と食い違う既存アセットを見つけたら、直す前に**ユーザーへ矛盾を報告**する。
 
-> ⚠️ 現状 `canon.yaml` は未作成。作成されるまで、このスキルが生成するものは全て `DRAFT` 扱いとし、
-> CANON 昇格（= `visuals.yaml` への確定登録）はユーザー承認を必須とする。
+> `canon.yaml` は作成済み（`soramachine-canon/canon.yaml`）。ただし各キャラの `appearance` は未記入のため、
+> このスキルが生成するものは当面 `DRAFT` 扱いとし、CANON 昇格（= `visuals.yaml` への確定登録）はユーザー承認を必須とする。
+> キャラ表記は canon の `naming` に従う：**公開物は日本語表記**、`subject.display_name` 等の技術識別子は ASCII。
 
 ## ネタバレ管理（必須ガード）
 
 `note-article-factory` / `yukino-tarot-engine` と同じ基準を画像にも適用する。
 
-- **公開画像（note無料 / TikTok / X / Threads / BOOTH商品ページ）に出してよいのは spoiler level F / B まで。**
-- A は注意書き付きで限定的に（FANBOX等のクローズド面）、**S は公開画像に一切出さない**。
+canon の `spoiler_levels`（F=Free / B=Basic / A=Advanced / S=Secret）に従う。
+
+- **公開画像（note無料 / TikTok / X / Threads / BOOTH商品ページ）に出してよいのは F / B まで。**
+- **A** は原則クローズド面（FANBOX / note有料パート）。公開面に出す場合は**ネタバレ注意書きを画像に隣接させ**限定的に。
+- **S** は公開・有料を問わず一切出さない（作者が明示的に解禁するまで）。
+- **未分類の情報は A として扱う。** 迷ったら必ず重い方へ倒す。
 - 未登場キャラ・未公開ガジェット・終盤の情景は、無料面のアイキャッチに使わない。
 - AI が独断で spoiler level や canon status を上げない。迷うものは外してユーザーに確認。
 
