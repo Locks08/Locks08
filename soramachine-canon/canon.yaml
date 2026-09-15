@@ -81,6 +81,9 @@ naming:
     - "作品表記は日本語に統一する。本文・記事・セリフ・画像内の文字・公開物すべて"
     - "英語表記は alias として保持するだけで、公開物の本文には使わない"
     - >-
+      短縮形（short_form）は見出し・吹き出し・字幕など文字数制約のある場所で使う。
+      初出と改まった場面では canonical を使う。short_form が空のキャラは canonical をそのまま使う
+    - >-
       例外：技術識別子は ASCII（ローマ字）のまま使う。
       YAMLのキー / ファイル名 / Lovart の display_name / ElevenLabs のラベルなど。
       これらは公開物ではないため日本語統一の対象外
@@ -143,6 +146,7 @@ characters:
 
   _template:
     canonical: ""             # 正式表記（表記統制の基準）
+    short_form: ""            # 短縮形。見出し・吹き出し・字幕で使う。空なら canonical をそのまま使う
     aliases: []               # 別表記・英語名・愛称
     role: ""                  # 物語上の役割
     revenue_role: ""          # 集客 / 分析 / 深堀り / 転換 / 本編ドライバ
@@ -158,6 +162,7 @@ characters:
 
   aro:
     canonical: "アロコスアークライド"
+    short_form: "アロ"        # 見出し・吹き出し・字幕。全文はフォーマルな場面と初出のみ
     aliases: ["Aro", "Arrokoth Arclide"]   # 公開物の本文には使わない（naming ルール）
     role: "主人公・太陽の欠片"                        # 既存スキル記載（要確認）
     revenue_role: "本編ドライバ"                      # note-article-factory 記載
@@ -343,10 +348,18 @@ open_questions:
     status: OPEN
 
   - id: Q6
+    question: "アロコスアークライドの短縮形（記事見出し・吹き出し・字幕で必要）をどうするか"
+    answer: "「アロ」。初出と改まった場面ではフルネーム、それ以外は短縮形を使う"
+    blocks: ["characters.aro", "naming"]
+    raised: "2026-09-15"
+    resolved: "2026-09-15"
+    status: RESOLVED
+
+  - id: Q7
     question: >-
-      日本語表記の確定待ちが2件。(a) レイラ / ネファ は Layla / Nepha からの音写の当てで、作者未確認。
-      (b) アロコスアークライドの短縮形（記事見出しやセリフで必ず必要になる）を「アロ」とするか、別の呼称にするか。
-    blocks: ["characters.layla", "characters.nepha", "characters.aro"]
+      レイラ / ネファ の日本語表記は？ 現在の値は Layla / Nepha からの標準的な音写を
+      AIが当てたもので、作者未確認。ライラ / ネーファ 等もあり得る。
+    blocks: ["characters.layla", "characters.nepha"]
     raised: "2026-09-15"
     status: OPEN
-    note: "(b) は note の見出しや Webtoon のセリフで毎回使うため、記事を書き始める前に決めたい"
+    note: "両キャラとも登場が先のため急がない。Q4・Q5 と同時に決めるのが効率的"

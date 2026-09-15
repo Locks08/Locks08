@@ -70,12 +70,15 @@ python3 -c "import yaml; yaml.safe_load(open('soramachine-canon/canon.yaml')); p
 **確定（CANON）**
 - `naming` … 作品表記は日本語に統一。技術識別子（YAMLキー / ファイル名 / Lovart の display_name / ElevenLabs ラベル）は ASCII
 - `spoiler_levels` … F=Free / B=Basic / A=Advanced / S=Secret。重要度ではなく「情報の所在」で判定
-- `characters.aro.canonical` … アロコスアークライド
+- `characters.aro` … 表記「アロコスアークライド」／短縮形「アロ」
 
 **未着手**
 - 全キャラの `personality` / `speech` / `appearance` 等の中身
 - `world` / `terms` の定義
 - `arcs`
 
-**要決定**：Q4（レイラの役割）/ Q5（ネファの公開可否）/ Q6（音写の確認と主人公の短縮形）
-解決済み Q1〜Q3 は履歴として `open_questions` に残してある。
+**要決定**：Q4（レイラの役割）/ Q5（ネファの公開可否）/ Q7（レイラ・ネファの音写確認）
+いずれも登場が先のため急がない。解決済み Q1〜Q3・Q6 は履歴として `open_questions` に残してある。
+
+**次に埋めるべき**：`characters.yukino` の `speech` と `appearance`。
+第一商品（yukino-tarot-engine）と最初のビジュアル生成が、この2項目だけを待っている状態。
