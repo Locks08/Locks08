@@ -1,0 +1,117 @@
+# visuals.yaml — ソラマシン ビジュアル資産レジストリ
+#
+# character-voice-spec の voices.yaml と対になる。声=voices.yaml / 絵=visuals.yaml。
+# 唯一の真実は soramachine-canon/canon.yaml。ここで設定を発明しない。
+# status: DRAFT → CANON への昇格はユーザー承認が必須。
+
+version: 0.1.0
+canon_ref: "soramachine-canon/canon.yaml"   # 未作成の間は全て DRAFT 扱い
+
+# ---------------------------------------------------------------
+# 画風ロック：全生成に共通で効かせる語彙
+# 作家名・作品名は書かない。自分の言葉で記述する。
+# ---------------------------------------------------------------
+style:
+  global:
+    style_lock: ""        # 例: "線は細く硬質、影は少なく、光源は常に一点。彩度は低く抑える"
+    negative: ""          # 例: "写実的な質感、過剰なグロー、文字、ウォーターマーク"
+    palette: []           # canon の色設計に従う。例: ["#0B1026", "#E8D7A2"]
+    status: DRAFT
+
+  # 用途別の上書き（必要な場合のみ）
+  variants:
+    webtoon:
+      style_lock: ""      # コマ内で読みやすいよう情報量を落とす等
+      status: DRAFT
+    tarot:
+      style_lock: ""      # 装飾的・象徴的に寄せる
+      status: DRAFT
+
+# ---------------------------------------------------------------
+# キャラ別 subject（Lovart asset library の承認済み参照）
+#
+# subject が埋まっているキャラは、生成時に必ず --subjects で渡す。
+#   --subjects '[{"url":"<url>","asset_id":"<asset_id>","display_name":"<name>"}]'
+# 空のキャラは、まず候補生成 → 選定 → library 登録 → ここへ記入、の順で確定させる。
+# ---------------------------------------------------------------
+characters:
+
+  aro:
+    display: "Aro / Arrokoth Arclide"
+    role: "主人公・太陽の欠片"
+    subject: { asset_id: "", url: "", display_name: "Aro", channel: "" }
+    appearance_lock: ""     # canon 準拠。未定なら空のまま
+    spoiler_level: F
+    status: DRAFT
+
+  yukino:
+    display: "Yukino"
+    role: "夢・妖精の欠片／占い導線（第一商品の担い手）"
+    subject: { asset_id: "", url: "", display_name: "Yukino", channel: "" }
+    appearance_lock: ""
+    spoiler_level: F
+    status: DRAFT
+    notes: "yukino-tarot-engine のカード絵・アイキャッチで最も使用頻度が高い。最優先で確定する"
+
+  nero:
+    display: "Nero"
+    role: "集客・流入・入口役"
+    subject: { asset_id: "", url: "", display_name: "Nero", channel: "" }
+    appearance_lock: ""
+    spoiler_level: F
+    status: DRAFT
+    notes: "note/TikTok の入口記事に多用。優先度2"
+
+  grim:
+    display: "Grim"
+    role: "記録者・分析"
+    subject: { asset_id: "", url: "", display_name: "Grim", channel: "" }
+    appearance_lock: ""
+    spoiler_level: F
+    status: DRAFT
+
+  zekkusu:
+    display: "Zeks / Zekkusu"
+    role: "深掘り・秩序・贖罪の影"
+    subject: { asset_id: "", url: "", display_name: "Zeks", channel: "" }
+    appearance_lock: ""
+    spoiler_level: B
+    status: DRAFT
+
+  kai:
+    display: "Kai"
+    role: "設計者・理知"
+    subject: { asset_id: "", url: "", display_name: "Kai", channel: "" }
+    appearance_lock: ""
+    spoiler_level: B
+    status: DRAFT
+
+  layla:
+    display: "Layla"
+    role: ""                # canon 参照
+    subject: { asset_id: "", url: "", display_name: "Layla", channel: "" }
+    appearance_lock: ""
+    spoiler_level: TBD
+    status: DRAFT
+
+  nepha:
+    display: "Nepha"
+    role: "敵対アーキビスト"
+    subject: { asset_id: "", url: "", display_name: "Nepha", channel: "" }
+    appearance_lock: ""
+    spoiler_level: A       # 敵対キャラ。公開面での扱いは要確認
+    status: DRAFT
+
+# ---------------------------------------------------------------
+# Lovart 側の固定情報
+# ---------------------------------------------------------------
+lovart:
+  project_id: ""           # ソラマシン用に1つ固定。config --json で確認して記入
+  threads:                 # 用途ごとにスレッドを分けて再利用する
+    ref: ""                # 立ち絵・設定画
+    eyecatch: ""           # note / BOOTH アイキャッチ
+    webtoon: ""            # Webtoon コマ
+    tarot: ""              # タロットカード絵
+  prefer_models:           # 安定して良かったモデルを確定したら記入
+    IMAGE: []
+    VIDEO: []
